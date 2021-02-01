@@ -1,0 +1,21 @@
+@import './sass_partials/_shared-variables'
+
+$headerHeight : 4.06rem
+    
+:host
+    min-height:100vh
+    display: grid
+    grid-template-rows: $headerHeight auto 3rem   
+
+header
+    position: fixed
+    width: 100%
+    height: $headerHeight
+    top: 0
+    left: 0
+
+.content-injection-container
+    grid-row-start: 2
+
+footer
+    grid-row-start: 3

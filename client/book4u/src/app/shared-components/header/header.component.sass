@@ -1,0 +1,93 @@
+@import '../../sass_partials/_shared-variables'
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap')
+
+$innerContainerMargin : 0.8rem
+
+@mixin flex()
+    display: flex
+    flex-wrap: nowrap
+    align-items: center 
+
+@function lightenBackground($percent)
+   @return lighten(map-get($colors,header ),$percent)
+
+@function darkenBackground($percent)
+   @return darken(map-get($colors,header),$percent )
+
+:host 
+    box-shadow: 0 3px 8px darkenBackground(15%)
+  
+.main-container
+    @include flex
+    justify-content: space-between
+    height: 100%
+    background: map-get($colors,header )
+
+    a 
+     color: inherit
+     text-decoration: none
+     outline: none   
+  
+.active-link
+    color: lightenBackground(35%) !important //! overriding 'color: inherit'
+    fill: lightenBackground(35%)
+    
+.leftSide-container 
+    margin-left: 2rem
+
+.store-logo-title-container 
+    @include flex
+    cursor: pointer
+
+    &:hover
+        .title
+            color: #deddc1
+            -webkit-text-stroke-width: 1px
+            -webkit-text-stroke-color: black
+            text-shadow: none
+            
+.logo
+    width: 4rem
+    height: 4rem
+    background-image: url('../../../assets/images/logo.png')
+    background-size: contain
+
+.title
+    margin-left: $innerContainerMargin
+    font-family: 'Leckerli One'
+    font-size: 1.9rem
+    color: darkenBackground(45%)
+    text-shadow: 2px 2px lightenBackground(15%)
+    transition: color 40ms ease-in 
+
+.rightSide-container 
+    width: 18rem
+    height: 80%
+    margin-right: $innerContainerMargin
+    background: darkenBackground(7%)
+    box-shadow: 0px 0px 5px  darkenBackground(25%)
+    border-radius: 25px
+    @include flex
+    justify-content: space-around
+
+    a
+      cursor: pointer
+
+      &:hover
+          @extend .active-link
+          transition: color 100ms linear,fill 100ms linear
+
+.cart-container
+    @include flex
+
+.cart-icon
+    display: block
+    width: 1.7rem
+    height : 1.7rem
+
+
+   
+    
+
+    
+     
