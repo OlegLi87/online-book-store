@@ -28,10 +28,6 @@ $innerContainerMargin : 0.8rem
      text-decoration: none
      outline: none   
   
-.active-link
-    color: lightenBackground(35%) !important //! overriding 'color: inherit'
-    fill: lightenBackground(35%)
-    
 .leftSide-container 
     margin-left: 2rem
 
@@ -69,6 +65,10 @@ $innerContainerMargin : 0.8rem
     border-radius: 25px
     @include flex
     justify-content: space-around
+
+    .active-link
+      color: lightenBackground(35%) 
+      fill: lightenBackground(35%)
 
     a
       cursor: pointer

@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="leftSide-container">
-    <a [routerLink]="'/'">
+    <a routerLink="/">
       <div class="store-logo-title-container">
         <div class="logo"></div>
         <span class="title">{{ title }}</span>
@@ -9,11 +9,7 @@
   </div>
   <div class="rightSide-container">
     <div class="greeting-container">Hello,{{ userName }}</div>
-    <a
-      class="cart-container"
-      [routerLink]="'/cart'"
-      [routerLinkActive]="'active-link'"
-    >
+    <a class="cart-container" routerLink="/cart" routerLinkActive="active-link">
       <span class="cartText">Cart</span>
       <div class="cart-icon">
         <svg
@@ -75,7 +71,7 @@
         </svg>
       </div>
     </a>
-    <a [routerLink]="'/login'" routerLinkActive="active-link">
+    <a routerLink="/login" routerLinkActive="active-link">
       <div class="log-container">
         {{ logText }}
       </div></a
