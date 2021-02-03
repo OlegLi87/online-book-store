@@ -1,1 +1,18 @@
-<p>book-item works!</p>
+<div class="book-container">
+  <div
+    class="image-container"
+    [ngStyle]="{
+      'background-image': 'url(' + book.imageUrl + ')'
+    }"
+  ></div>
+  <h4 class="info title">{{ book.title }}</h4>
+  <h5 class="info author"><span class="prefix">by</span> {{ book.author }}</h5>
+  <div class="rating">
+    <app-rating-star
+      [stars]="5"
+      [rating]="book.rating"
+      [readable]="true"
+    ></app-rating-star>
+  </div>
+  <h4 class="info price">{{ book.price | currency: "USD" }}</h4>
+</div>

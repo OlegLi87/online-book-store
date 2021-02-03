@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 export interface Book {
   id: string;
   imageUrl: string;
-  name: string;
+  title: string;
   author: string;
   description: string;
   category: string[];

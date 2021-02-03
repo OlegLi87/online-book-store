@@ -1,1 +1,6 @@
-<p>books-list works!</p>
+<div class="main-container">
+  <h1 class="title">Our Books Stock</h1>
+  <div class="books-container" *ngIf="books">
+    <app-book-item *ngFor="let book of books" [book]="book"></app-book-item>
+  </div>
+</div>

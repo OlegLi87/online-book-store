@@ -9,7 +9,7 @@ export class HttpService {
 
   fetchBooks(): void {
     of<Book[]>(this.getDummyData())
-      .pipe(delay(3000))
+      .pipe(delay(100))
       .subscribe((books) => {
         this.booksService.setBooks(books);
       });
@@ -20,7 +20,7 @@ export class HttpService {
 
     const book: Book = {
       id: 'sf4sd65f4sd654fsd4',
-      name: 'Rage',
+      title: 'Rage',
       imageUrl:
         'https://imgv2-2-f.scribdassets.com/img/word_document/475515209/original/216x287/af3cb26241/1612176007?v=1',
       author: 'Bob Woodward',

@@ -1,3 +1,4 @@
+import { SharedComponentsModule } from './../shared-components/sharedComponents.module';
 import { NotFoundComponent } from './../not-found/not-found.component';
 import { Routes, RouterModule } from '@angular/router';
 import { BookItemComponent } from './books-list/book-item/book-item.component';
@@ -26,7 +27,11 @@ const routes: Routes = [
     BooksListComponent,
     BookItemComponent,
   ],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    SharedComponentsModule,
+    RouterModule.forChild(routes),
+  ],
   exports: [
     MainPageComponent,
     NewArrivalsComponent,
