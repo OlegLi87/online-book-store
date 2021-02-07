@@ -1,3 +1,4 @@
+import { CartService } from './../../../services/cart.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Book } from 'src/app/services/books.service';
 
@@ -9,7 +10,11 @@ import { Book } from 'src/app/services/books.service';
 export class BookItemComponent implements OnInit {
   @Input() book: Book;
 
-  constructor() {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {}
+
+  addToCart(): void {
+    this.cartService.addItem(this.book);
+  }
 }

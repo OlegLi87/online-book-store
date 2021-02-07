@@ -79,11 +79,17 @@ $innerContainerMargin : 0.8rem
 
 .cart-container
     @include flex
+    position: relative
 
 .cart-icon
     display: block
     width: 1.7rem
     height : 1.7rem
+
+div[quantityDisplay]
+    position: absolute
+    top: -0.6rem
+    right: -0.9rem
 
 
    

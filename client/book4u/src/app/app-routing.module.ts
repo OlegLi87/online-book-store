@@ -1,3 +1,4 @@
+import { CartService } from './services/cart.service';
 import { LoginComponent } from './login/login.component';
 import { CartComponent } from './cart/cart.component';
 import { NgModule } from '@angular/core';

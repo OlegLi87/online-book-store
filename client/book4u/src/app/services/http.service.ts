@@ -33,7 +33,9 @@ export class HttpService {
       arrivalDate: new Date(2021, 0, 19),
     };
 
-    for (let i = 0; i < 50; i++) books.push(book);
+    for (let i = 0; i < 50; i++) {
+      books.push({ ...book, id: 'sfsdfsdfsd' + Math.random() * 100000 });
+    }
 
     return books;
   }

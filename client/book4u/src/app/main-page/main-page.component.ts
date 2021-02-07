@@ -25,7 +25,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     if (!(this.books = this.booksService.getBooks())) {
       this.subscription = this.booksService.booksUpdated.subscribe((books) => {
         this.books = books;
-        console.log(this.books);
       });
       this.httpService.fetchBooks();
     }

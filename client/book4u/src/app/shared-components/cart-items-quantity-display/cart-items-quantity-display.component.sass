@@ -1,0 +1,19 @@
+@import ../../sass_partials/_shared-variables
+
+$displaySize: 1.3rem
+$updatedSize: $displaySize + 0.2rem
+
+.quantity-display
+    @include basicFlex()
+    background: darken(map-get($colors,greenColor ),5%)
+    width: $displaySize
+    height: $displaySize
+    color: #faf1f1
+    border-radius: 50%
+    font-size: 0.8rem
+    transition: width 150ms linear,height 150ms linear,background 150ms linear
+
+.updated
+  width: $updatedSize
+  height: $updatedSize
+  background: lighten(map-get($colors,greenColor ),25%)

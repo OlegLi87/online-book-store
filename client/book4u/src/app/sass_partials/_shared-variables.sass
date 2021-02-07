@@ -1,5 +1,10 @@
-$colors : (content:#d9d1bd,header: hsl(24, 53,55 ))
+$colors : (content:#d9d1bd,header: hsl(24, 53,55 ),greenColor: #0f8816)
 
+@mixin basicFlex()
+  display: flex
+  justify-content: center
+  align-items: center
+  
 @mixin  main-container()
   background: map-get($colors,content )
   height: 100%
@@ -8,7 +13,6 @@ $colors : (content:#d9d1bd,header: hsl(24, 53,55 ))
 @mixin content-container()
    height: 100%
    width: 90%
-   background: white
    margin: 0 auto
     
 

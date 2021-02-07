@@ -1,7 +1,184 @@
 @import '../sass_partials/_shared-variables'
 
+$imageHeight: 5rem
+$fromBorderMargin: 1rem
+$infoFontSize: 1.2rem
+$greenColor: map-get($colors,greenColor)
+
+@mixin borderStyle()
+       box-shadow: 0 0 8px map-get($colors,header )
+       border-radius: 25px
+  
 .main-container
-    @include main-container()
+    @include main-container()   
+    font-family: inherit 
 
 .content-container
     @include content-container()
+    @include basicFlex()
+    flex-direction: column
+    
+#cart-image
+    margin:0 auto
+    max-width:50%
+    fill: map-get($colors,header)
+    opacity: 0.15
+    position: absolute
+
+.cart-items-container
+    width:100%
+    z-index:10
+
+    .item-row
+        @include basicFlex()
+        justify-content: space-between
+        height: $imageHeight + 1rem
+        width: 80%
+        margin: 1rem auto
+        @include borderStyle()
+        
+        .book-info-container
+             @include basicFlex()
+
+             .image-container
+                 width: 3.8rem
+                 margin:0 $fromBorderMargin 0 $fromBorderMargin + 1.5rem
+                 height: $imageHeight
+                 background-size: contain
+                 background-repeat: no-repeat 
+                 flex-shrink: 0 
+              
+             .info
+                 font-size: $infoFontSize
+                 flex-shrink: 5
+       
+        .quantity-total-price-container
+              @include basicFlex()
+              justify-content: flex-start
+              width: 21rem
+              height:$imageHeight
+              margin:0 $fromBorderMargin 0 $fromBorderMargin + 2rem
+        
+              .quantity-container
+                   @include basicFlex()
+
+                   .quantity
+                        margin: 0 $fromBorderMargin
+                        @include basicFlex()
+                
+                        input
+                            padding: 0.3rem
+                            margin-left: 0.5rem
+                            font-size: $infoFontSize - 0.3rem
+                            background: darken(map-get($colors,content),15%)
+                            border: none
+                            border-radius: 25px
+                            width: 7rem
+                            text-align: center
+
+                            &:focus
+                               outline: none
+
+                   .quantity-change-container
+                           @include basicFlex()
+                           flex-direction: column
+
+                           .quantity-change
+                               @include basicFlex()
+                               background: map-get($colors,header )
+                               font-size: $infoFontSize
+                               width: 1.5rem
+                               height: 1.5rem
+                               border-radius: 50%
+                               cursor: pointer
+
+                               &:active
+                                   opacity: 0.5
+
+                           .minus
+                               margin-top: 0.5rem
+                        
+                    
+              .price-container
+                    margin-left: $fromBorderMargin      
+                    color: $greenColor
+                    font-size: $infoFontSize - 0.1rem
+
+              .remove-button
+                    width: 1.5rem
+                    margin-left: $fromBorderMargin
+                    cursor: pointer
+
+                    &:active
+                        fill: map-get($colors,header)
+
+                    &:hover
+                        opacity: 0.5
+                        transition: opacity 100ms linear
+
+        
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button 
+  -webkit-appearance: none
+  margin: 0
+
+
+/* Firefox */
+input[type=number] 
+  -moz-appearance: textfield
+
+.total-price-container
+    @include basicFlex()
+    @include borderStyle()
+    justify-content: space-between
+    width: 32rem
+    height: 5rem
+    margin-top: 2rem
+    z-index: 10
+    
+    .total-price
+        margin-left: $fromBorderMargin
+        font-size: $infoFontSize + 0.5rem
+
+        .price
+            color: $greenColor
+
+    .button
+        width: 2.5rem
+        height: 3rem
+        position: relative
+        top: -0.7rem
+
+        :not(.button-text)
+             cursor: pointer
+
+        .button-text
+            display: block
+            margin-bottom: 0.5rem
+
+    .button.pay
+        color: $greenColor
+        fill: $greenColor
+
+        :not(.button-text)
+           &:hover
+               fill: lighten($greenColor,25%)
+           &:active
+                 fill: rgba(255,255,255,0.5)
+
+    .button.clear 
+        margin-right: $fromBorderMargin + 1rem
+        color: red
+        fill: red
+
+        :not(.button-text)
+           &:hover
+               fill: darken(red,10%)
+           &:active
+                 fill: rgba(255,255,255,0.5)
+
+
+    
+
+            
+   

@@ -3,13 +3,13 @@ import { Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-rating-star',
-  templateUrl: './rating-star.component.html',
-  styleUrls: ['./rating-star.component.sass'],
+  selector: 'app-rating-stars',
+  templateUrl: './rating-stars.component.html',
+  styleUrls: ['./rating-stars.component.sass'],
 })
-export class RatingStarComponent implements OnInit, AfterViewInit {
-  @Input() stars: number = 5;
-  @Input() rating: number = 3;
+export class RatingStarsComponent implements OnInit, AfterViewInit {
+  @Input() stars: number = 10;
+  @Input() rating: number = 5;
   @Input() color: string = 'red';
   @Input() size: { width: string; height: string } = {
     width: '1.25rem',
@@ -19,14 +19,13 @@ export class RatingStarComponent implements OnInit, AfterViewInit {
   @ViewChild('container') containerRef: ElementRef<HTMLDivElement>;
 
   colorsArray = new Array<string>();
-  private starsArray: Array<HTMLElement>;
+  private starsArray: Array<SVGSVGElement>;
 
   constructor() {}
 
   ngOnInit(): void {
     for (let i = 0; i < this.stars; i++) {
-      let color = '';
-      if (i < this.rating) color = this.color;
+      let color = i < this.rating ? this.color : '';
       this.colorsArray.push(color);
     }
   }
@@ -42,15 +41,15 @@ export class RatingStarComponent implements OnInit, AfterViewInit {
 
   hovered(event: Event): void {
     if (this.readable) return;
-    const starIndex = this.getStarIndex(event.target as HTMLElement);
+    const starIndex = this.getStarIndex(event.target as SVGAElement);
     this.setColors(starIndex);
   }
 
   changeRating(event: Event): void {
     if (this.readable) return;
-    let targetEl = event.target as HTMLElement;
-    if (targetEl.localName !== 'svg') targetEl = targetEl.parentElement; // click might be on path element
-    this.rating = this.getStarIndex(targetEl) + 1;
+    let targetEl = event.target as Element;
+    if (!(targetEl instanceof SVGSVGElement)) targetEl = targetEl.parentElement; // click might be on path element
+    this.rating = this.getStarIndex(targetEl as SVGSVGElement) + 1;
     this.setColors(this.rating - 1);
     this.readable = true;
   }
@@ -62,13 +61,13 @@ export class RatingStarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getStarIndex(star: HTMLElement): number {
+  private getStarIndex(star: SVGElement): number {
     return this.starsArray.findIndex((s) => s === star);
   }
 
   private setStarsArray(): void {
     this.starsArray = Array.from(
-      this.containerRef.nativeElement.childNodes
-    ).filter((n) => n['localName'] === 'svg') as Array<HTMLElement>;
+      this.containerRef.nativeElement.getElementsByTagName('svg')
+    );
   }
 }
