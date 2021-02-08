@@ -4,8 +4,13 @@
     [ngStyle]="{
       'background-image': 'url(' + book.imageUrl + ')'
     }"
+    [routerLink]="['/book', book.id]"
   >
-    <div class="cart-image-container" (click)="addToCart()">
+    <div
+      class="icon-container cart"
+      *ngIf="!isAdded()"
+      (click)="addToCart($event)"
+    >
       <svg
         id="cart-image"
         enable-background="new 0 0 512 512"
@@ -23,6 +28,35 @@
         <path
           d="m346 266.717c-8.284 0-15 6.716-15 15v110c0 8.284 6.716 15 15 15s15-6.716 15-15v-110c-.001-8.284-6.716-15-15-15z"
         />
+      </svg>
+    </div>
+    <div
+      class="icon-container checked"
+      *ngIf="isAdded()"
+      (click)="removeFromCart($event)"
+    >
+      <svg
+        version="1.1"
+        x="0px"
+        y="0px"
+        viewBox="0 0 367.805 367.805"
+        style="enable-background: new 0 0 367.805 367.805"
+        xml:space="preserve"
+      >
+        <g>
+          <path
+            style="fill: #3bb54a"
+            d="M183.903,0.001c101.566,0,183.902,82.336,183.902,183.902s-82.336,183.902-183.902,183.902
+		S0.001,285.469,0.001,183.903l0,0C-0.288,82.625,81.579,0.29,182.856,0.001C183.205,0,183.554,0,183.903,0.001z"
+          />
+          <polygon
+            style="fill: #d4e1f4"
+            points="285.78,133.225 155.168,263.837 82.025,191.217 111.805,161.96 155.168,204.801 
+		256.001,103.968 	"
+          />
+        </g>
+        <g></g>
+        <g></g>
       </svg>
     </div>
   </div>

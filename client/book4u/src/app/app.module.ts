@@ -1,3 +1,4 @@
+import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
 import { SharedComponentsModule } from './shared-components/sharedComponents.module';
 import { MainPageModule } from './main-page/mainPage.module';
@@ -8,11 +9,19 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { CartComponent } from './cart/cart.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { BookPageComponent } from './book-page/book-page.component';
 
-// load cart data from localstorage on app initializing
+// load cart data on app initialization
 function initializeApp(cartService: CartService): any {
   return () => {
     cartService.loadItems();
+  };
+}
+
+// load books on app initialization
+function fetchBooks(httpService: HttpService): any {
+  return (): Promise<void> => {
+    return httpService.fetchBooks();
   };
 }
 
@@ -22,6 +31,7 @@ function initializeApp(cartService: CartService): any {
     LoginComponent,
     CartComponent,
     NotFoundComponent,
+    BookPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +44,12 @@ function initializeApp(cartService: CartService): any {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       deps: [CartService],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: fetchBooks,
+      deps: [HttpService],
       multi: true,
     },
   ],

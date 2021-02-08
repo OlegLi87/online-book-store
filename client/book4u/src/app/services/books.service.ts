@@ -29,4 +29,8 @@ export class BooksService {
   getBooks(): Book[] {
     return this.books;
   }
+
+  getBookById(id: string): Book {
+    return this.books.find((b) => b.id === id);
+  }
 }

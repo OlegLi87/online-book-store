@@ -18,17 +18,17 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getBooks();
+    this.books = this.booksService.getBooks();
   }
 
-  private getBooks(): void {
-    if (!(this.books = this.booksService.getBooks())) {
-      this.subscription = this.booksService.booksUpdated.subscribe((books) => {
-        this.books = books;
-      });
-      this.httpService.fetchBooks();
-    }
-  }
+  // private getBooks(): void {
+  //   if (!(this.books = this.booksService.getBooks())) {
+  //     this.subscription = this.booksService.booksUpdated.subscribe((books) => {
+  //       this.books = books;
+  //     });
+  //     this.httpService.fetchBooks();
+  //   }
+  // }
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();

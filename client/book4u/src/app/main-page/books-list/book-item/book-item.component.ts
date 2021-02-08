@@ -14,7 +14,17 @@ export class BookItemComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  addToCart(): void {
+  addToCart(event: Event): void {
     this.cartService.addItem(this.book);
+    event.stopImmediatePropagation();
+  }
+
+  removeFromCart(event: Event): void {
+    this.cartService.removeItem(this.book);
+    event.stopImmediatePropagation();
+  }
+
+  isAdded(): boolean {
+    return this.cartService.getItemIndex(this.book) !== -1;
   }
 }

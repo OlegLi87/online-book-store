@@ -7,12 +7,15 @@ import { Book, BooksService } from './books.service';
 export class HttpService {
   constructor(private booksService: BooksService) {}
 
-  fetchBooks(): void {
-    of<Book[]>(this.getDummyData())
-      .pipe(delay(100))
-      .subscribe((books) => {
-        this.booksService.setBooks(books);
-      });
+  fetchBooks(): Promise<void> {
+    return new Promise((res, rej) => {
+      of<Book[]>(this.getDummyData())
+        .pipe(delay(100))
+        .subscribe((books) => {
+          this.booksService.setBooks(books);
+          res();
+        });
+    });
   }
 
   private getDummyData(): Book[] {

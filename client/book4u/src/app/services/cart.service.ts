@@ -61,6 +61,10 @@ export class CartService {
     this.streamItems();
   }
 
+  getItemIndex(item: Item): number {
+    return this.cartItems.findIndex((i) => i.item.id === item.id);
+  }
+
   private streamItems(): void {
     this.cartItemsUpdated.next(this.cartItems);
   }
@@ -70,9 +74,5 @@ export class CartService {
       this.LOCAL_STORAGE_KEY,
       JSON.stringify(this.cartItems)
     );
-  }
-
-  private getItemIndex(item: Item): number {
-    return this.cartItems.findIndex((i) => i.item.id === item.id);
   }
 }
