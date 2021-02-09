@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Book, BooksService } from './books.service';
 
@@ -7,15 +7,8 @@ import { Book, BooksService } from './books.service';
 export class HttpService {
   constructor(private booksService: BooksService) {}
 
-  fetchBooks(): Promise<void> {
-    return new Promise((res, rej) => {
-      of<Book[]>(this.getDummyData())
-        .pipe(delay(100))
-        .subscribe((books) => {
-          this.booksService.setBooks(books);
-          res();
-        });
-    });
+  fetchBooks(): Observable<Book[]> {
+    return of<Book[]>(this.getDummyData()).pipe(delay(100));
   }
 
   private getDummyData(): Book[] {

@@ -11,7 +11,7 @@ $innerMargin: 1rem
     margin: 2rem auto
     display: grid
     grid-template-columns: 10rem 3fr
-    grid-template-rows: 1fr auto 1fr 1fr
+    grid-template-rows: 1fr auto thin 1fr 
     grid-gap: 1rem
 
     
@@ -33,12 +33,13 @@ $innerMargin: 1rem
 
     .title
         font-size: $titleFontSize
+        line-height: 1
         margin-right: $innerMargin
 
     .additional-info
         @include basicFlex()
         position: relative
-        top: 1.5rem
+        top: 1.4rem
 
         .publish-year
             margin-right: 0.3rem
@@ -54,16 +55,36 @@ $innerMargin: 1rem
          @include basicFlex()
          margin-top: $innerMargin + 0.5rem
 
-
-.addToCart-container
-    @include basicFlex()
-
 .price-container
     @include basicFlex()
+    grid-row: 4
+    grid-column: 2
 
     .price
         color: map-get($colors,greenColor)
         font-size: $titleFontSize - 1rem
         margin-left: 1rem
+
+.addToCart-container
+    @include basicFlex()
+    grid-column: 1
+
+    .addToCart-button
+        background: map-get($colors,header)
+        padding: 0.8rem
+        border-radius: 10px
+        cursor: pointer
+
+        &:hover
+            box-shadow: 0 0 7px darken(map-get($colors,header),25%)
+            transition: box-shadow 10ms linear
     
+        &:active
+            color: map-get($colors,header)
+            background-color: darken(map-get($colors,content),5%)
+
+    .checked-icon
+        width: 3rem
+        height: 3rem
+            
    

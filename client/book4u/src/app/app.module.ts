@@ -1,3 +1,4 @@
+import { BooksService } from './services/books.service';
 import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
 import { SharedComponentsModule } from './shared-components/sharedComponents.module';
@@ -19,9 +20,15 @@ function initializeApp(cartService: CartService): any {
 }
 
 // load books on app initialization
-function fetchBooks(httpService: HttpService): any {
+function fetchBooks(httpService: HttpService, booksService: BooksService): any {
   return (): Promise<void> => {
-    return httpService.fetchBooks();
+    return new Promise<void>((res) => {
+      const subs = httpService.fetchBooks().subscribe((books) => {
+        booksService.setBooks(books);
+        subs.unsubscribe();
+        res();
+      });
+    });
   };
 }
 
@@ -49,7 +56,7 @@ function fetchBooks(httpService: HttpService): any {
     {
       provide: APP_INITIALIZER,
       useFactory: fetchBooks,
-      deps: [HttpService],
+      deps: [HttpService, BooksService],
       multi: true,
     },
   ],
