@@ -2,11 +2,14 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const chalk = require('chalk');
+const booksRouter = require('./app_api/routes/books');
 const PORT = parseInt(process.env.PORT);
 
 app.use(cors());
+app.use(booksRouter);
+
 require('./app_api/db/db_connection');
 
 app.listen(PORT, () => {
-  console.log(chalk.blueBright(`server is up and running on port : ${PORT}`));
+  console.log(chalk.bgBlue(`Server is up and running on port : ${PORT}`));
 });
