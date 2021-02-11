@@ -4,7 +4,7 @@ const connectionString = process.env.DB_CONNECTION_STRING;
 
 // !Openning connection,addiding listeners,
 mongoose
-  .connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => console.log(chalk.bgBlue('Connection with database successfully established!')))
   .catch((err) => console.log(chalk.bgRed('Initial connection failed' + err)));
 

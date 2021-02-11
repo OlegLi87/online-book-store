@@ -1,3 +1,4 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BooksService } from './services/books.service';
 import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
@@ -42,6 +43,7 @@ function fetchBooks(httpService: HttpService, booksService: BooksService): any {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     MainPageModule,
     SharedComponentsModule,

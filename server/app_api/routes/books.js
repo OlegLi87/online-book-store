@@ -9,4 +9,16 @@ router.get('/books/:id', (req, res) => {
   booksController.getBookById(req, res);
 });
 
+router.post('/books', (req, res) => {
+  booksController.createBook(req, res);
+});
+
+router.put('/books/:id', (req, res) => {
+  booksController.updateBook(req, res);
+});
+
+router.delete('/books/:id', (req, res) => {
+  booksController.deleteBook(req, res);
+});
+
 module.exports = router;

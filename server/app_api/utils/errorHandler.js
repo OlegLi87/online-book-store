@@ -1,15 +1,15 @@
-const errorResponse = {
-  status: 400,
-  message: 'Bad Request',
+const mongoose = require('mongoose');
+
+errorObj = {
+  message: 'Error occured',
+  responseStatus: 400,
 };
 
-function errorHandler(error, res) {
+function errorHandler(res, error) {
   if (error.kind === 'ObjectId') {
-    errorResponse.message = 'Provided id is not in valid format!';
-    errorResponse.status = 400;
-  }
-
-  res.status(errorResponse.status).send(errorResponse.message);
+    errorObj.message = 'Provided id is not in valid format';
+  } else errorObj.message = error.message;
+  res.status(errorObj.responseStatus).send({ message: errorObj.message });
 }
 
 module.exports = errorHandler;
