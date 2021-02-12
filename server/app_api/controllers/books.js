@@ -1,51 +1,73 @@
 const Book = require('../models/book');
-const errorHandler = require('../utils/errorHandler');
-const responseSender = require('../utils/responseSender');
+const { ResponseError } = require('../middleware/errorHandler');
 
-async function getBooks(req, res) {
+async function getBooks(req, res, next) {
   try {
     const books = await Book.find({});
-    responseSender(res, books);
+    if (!books?.length) throw new ResponseError();
+    res.send(books);
   } catch (error) {
-    errorHandler(res, error);
+    next(error);
   }
 }
 
-async function getBookById(req, res) {
+async function getBookById(req, res, next) {
   try {
-    const book = await Book.findById(req.params.id);
-    responseSender(res, book);
+    const book = await Book.findById(req.params.id).catch((err) => {
+      throw new ResponseError(err.message, 400);
+    });
+    if (!book) throw new ResponseError();
+    res.send(book);
   } catch (error) {
-    errorHandler(res, error);
+    next(error);
   }
 }
 
-async function createBook(req, res) {
+async function createBook(req, res, next) {
   try {
     const book = new Book(req.body);
-    const createdBook = await book.save();
-    responseSender(res, createdBook, 201);
+    const createdBook = await book.save().catch((err) => {
+      throw new ResponseError(err.message, 400);
+    });
+    res.status(201).send(book);
   } catch (error) {
-    errorHandler(res, error);
+    next(error);
   }
 }
 
-async function updateBook(req, res) {
+async function updateBook(req, res, next) {
   try {
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    responseSender(res, updatedBook);
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    }).catch((err) => {
+      throw new ResponseError(err.message, 400);
+    });
+    if (!updatedBook) throw new ResponseError();
+    res.send(updatedBook);
   } catch (error) {
-    errorHandler(res, error);
+    next(error);
   }
 }
 
-async function deleteBook(req, res) {
+async function deleteBook(req, res, next) {
   try {
-    const deletedBook = await Book.findByIdAndDelete(req.params.id);
-    responseSender(res, deletedBook, 204);
+    const deletedBook = await Book.findByIdAndRemove(req.params.id).catch(
+      (err) => {
+        throw new ResponseError(err.message, 400);
+      }
+    );
+    if (!deletedBook) throw new ResponseError();
+    res.status(204).send();
   } catch (error) {
-    errorHandler(res, error);
+    next(error);
   }
 }
 
-module.exports = { getBooks, getBookById, createBook, updateBook, deleteBook };
+module.exports = {
+  getBooks,
+  getBookById,
+  createBook,
+  updateBook,
+  deleteBook,
+};

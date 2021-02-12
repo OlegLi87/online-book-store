@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BooksService } from './services/books.service';
 import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
