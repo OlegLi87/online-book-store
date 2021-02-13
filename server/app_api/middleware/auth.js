@@ -8,14 +8,14 @@ async function userAuth(req, res, next) {
     const token = authField.slice('Bearer'.length + 1);
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ userName: payload.userName });
-    if (!user) throw new Error();
+    if (!user) throw 'authError';
     const index = user.tokens.findIndex((t) => t.token === token);
-    if (index === -1) throw new Error();
+    if (index === -1) throw 'authError';
     req.token = token;
     req.user = user;
     next();
   } catch (error) {
-    next(new ResponseError('Authorization failed', 401));
+    next(new ResponseError('User authorization failed', 401));
   }
 }
 

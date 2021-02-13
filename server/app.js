@@ -13,15 +13,18 @@ const PORT = parseInt(process.env.PORT) || 8080;
 app.use(cors());
 app.use(express.json());
 
+// configuring passport.
+require('./app_api/passport.config');
+
 app.use(booksRouter);
 app.use('/users', usersRouter);
 app.use('*', (req, res, next) => {
   next(new ResponseError('End point not found'));
 });
-
 app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(chalk.bgBlue(`Server is up and running on port : ${PORT}`));
+  // connecting to mongo db.
   require('./app_api/db/db_connection');
 });
