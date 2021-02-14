@@ -12,13 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { CartComponent } from './cart/cart.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BookPageComponent } from './book-page/book-page.component';
-
-// load cart data on app initialization
-function initializeApp(cartService: CartService): any {
-  return () => {
-    cartService.loadItems();
-  };
-}
+import { FormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
 
 // load books on app initialization
 function fetchBooks(httpService: HttpService, booksService: BooksService): any {
@@ -33,6 +28,19 @@ function fetchBooks(httpService: HttpService, booksService: BooksService): any {
   };
 }
 
+function initializeUser(authService: AuthService) {
+  return () => {
+    authService.initCurrentUser();
+  };
+}
+
+// load cart data on app initialization
+function intializeCart(cartService: CartService): any {
+  return () => {
+    cartService.initService();
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +52,7 @@ function fetchBooks(httpService: HttpService, booksService: BooksService): any {
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     AppRoutingModule,
     MainPageModule,
     SharedComponentsModule,
@@ -51,14 +60,20 @@ function fetchBooks(httpService: HttpService, booksService: BooksService): any {
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [CartService],
+      useFactory: fetchBooks,
+      deps: [HttpService, BooksService],
       multi: true,
     },
     {
       provide: APP_INITIALIZER,
-      useFactory: fetchBooks,
-      deps: [HttpService, BooksService],
+      useFactory: initializeUser,
+      deps: [AuthService],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: intializeCart,
+      deps: [CartService],
       multi: true,
     },
   ],

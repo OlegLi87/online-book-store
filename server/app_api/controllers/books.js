@@ -22,7 +22,6 @@ async function getBookById(req, res, next) {
     next(error);
   }
 }
-
 async function createBook(req, res, next) {
   try {
     const book = new Book(req.body);

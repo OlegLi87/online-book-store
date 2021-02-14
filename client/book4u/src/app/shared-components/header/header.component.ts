@@ -1,3 +1,4 @@
+import { AuthService, User } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   title: string = 'Book4u';
-  userName: string = 'guest';
-  logText: string = 'Login';
+  currentUser: User;
 
-  constructor() {}
+  constructor(private authService: AuthService) {
+    this.authService.currentUser.subscribe((currentUser) => {
+      this.currentUser = currentUser;
+    });
+  }
+
+  logout(): void {
+    if (confirm('Are you sure you want to logout?')) this.authService.logout();
+  }
 
   ngOnInit(): void {}
 }

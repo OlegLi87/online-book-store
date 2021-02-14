@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Book = require('../models/book');
 const { ResponseError } = require('../middleware/errorHandler');
 
 async function signUp(req, res, next) {
@@ -32,4 +33,33 @@ async function signOut(req, res, next) {
   }
 }
 
-module.exports = { signIn, signUp, signOut };
+async function getCart(req, res, next) {
+  try {
+    let cart = [];
+    const bookIds = req.user.cart.map((b) => b.bookId);
+    if (bookIds.length > 0) {
+      const books = await Book.find().where('_id').in(bookIds);
+      books.forEach((b, i) =>
+        cart.push({ book: books[i], quantity: req.user.cart[i].quantity })
+      );
+    }
+    res.send(cart);
+  } catch (error) {}
+}
+
+async function saveCart(req, res, next) {
+  try {
+    req.user.saveCart(req.body);
+    res.send(req.body);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
+  signIn,
+  signUp,
+  signOut,
+  getCart,
+  saveCart,
+};

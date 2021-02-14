@@ -1,3 +1,64 @@
 <div class="main-container">
-  <div class="content-container">Login</div>
+  <div class="content-container">
+    <h1 class="title" *ngIf="!currentUser">SignIn / SignUp</h1>
+    <form class="sign-form" #signForm="ngForm" *ngIf="!currentUser">
+      <div class="form-row">
+        <label for="userName">User Name</label>
+        <input
+          id="userName"
+          type="text"
+          name="userName"
+          [(ngModel)]="formData.userName"
+          placeholder="user name"
+          required
+          minlength="5"
+          #userName="ngModel"
+          [ngClass]="{
+            'invalid-input': !userName.valid && userName.touched
+          }"
+        />
+      </div>
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="formData.password"
+          placeholder="password"
+          required
+          minlength="7"
+          #password="ngModel"
+          [ngClass]="{
+            'invalid-input': !password.valid && password.touched
+          }"
+        />
+      </div>
+      <div class="form-row">
+        <button
+          class="button singin"
+          [disabled]="!signForm.valid"
+          (mouseover)="toggleHoverEffect($event)"
+          (mouseleave)="toggleHoverEffect($event)"
+          (click)="signIn()"
+        >
+          Sign In
+        </button>
+        <button
+          class="button signup"
+          [disabled]="!signForm.valid"
+          (mouseover)="toggleHoverEffect($event)"
+          (mouseleave)="toggleHoverEffect($event)"
+          (click)="signUp()"
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+    <div class="loggedIn-message-container" *ngIf="currentUser">
+      <h2 class="message">
+        You're succesfully logged in as {{ currentUser.userName }}
+      </h2>
+    </div>
+  </div>
 </div>

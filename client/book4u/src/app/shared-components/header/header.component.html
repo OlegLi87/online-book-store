@@ -8,7 +8,9 @@
     >
   </div>
   <div class="rightSide-container">
-    <div class="greeting-container">Hello,{{ userName }}</div>
+    <div class="greeting-container">
+      Hello,{{ currentUser ? currentUser.userName : "guest" }}
+    </div>
     <a class="cart-container" routerLink="/cart" routerLinkActive="active-link">
       <span class="cartText">Cart</span>
       <div class="cart-icon">
@@ -72,10 +74,11 @@
         <div quantityDisplay></div>
       </div>
     </a>
-    <a routerLink="/login" routerLinkActive="active-link">
-      <div class="log-container">
-        {{ logText }}
-      </div></a
+    <a routerLink="/login" routerLinkActive="active-link" *ngIf="!currentUser">
+      <div class="log-container">Login</div></a
+    >
+    <a *ngIf="currentUser" (click)="logout()">
+      <div class="log-container">Logout</div></a
     >
   </div>
 </div>

@@ -14,7 +14,7 @@ import { CartItem } from 'src/app/services/cart.service';
   styleUrls: ['./cart-items-quantity-display.component.sass'],
 })
 export class CartItemsQuantityDisplayComponent implements AfterViewInit {
-  cartItems: Array<CartItem> = [];
+  cartItems: Array<CartItem>;
   private ON_UPDATE_CLASS = 'updated';
   @ViewChild('display') display: ElementRef<HTMLDivElement>;
 
@@ -24,17 +24,15 @@ export class CartItemsQuantityDisplayComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.cartService.cartItemsUpdated.subscribe(
-      this.changeDisplayValue.bind(this)
-    );
+    this.cartService.cartUpdated.subscribe(this.changeDisplayValue.bind(this));
     this.changeDetector.detectChanges();
   }
 
   private changeDisplayValue(cartItems: Array<CartItem>): void {
-    const currentLengthDisplay = this.cartItems.length;
-    if (currentLengthDisplay === cartItems.length) return;
+    const firstChange = !this.cartItems;
+    if (!firstChange && this.cartItems.length === cartItems.length) return;
     this.cartItems = [...cartItems];
-    if (currentLengthDisplay) this.createVisualEffect();
+    if (!firstChange) this.createVisualEffect();
   }
 
   private createVisualEffect(): void {

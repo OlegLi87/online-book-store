@@ -1,8 +1,12 @@
+import { map, tap } from 'rxjs/operators';
+import { AuthService, User } from './auth.service';
+import { LocalStorageKeys, LocalStorageService } from './localStorage.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpService } from './http.service';
 
 type Item = {
-  id: string;
+  _id: string;
 };
 
 export interface CartItem {
@@ -16,63 +20,102 @@ export interface CartItem {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private LOCAL_STORAGE_KEY = 'cartItems';
-  private cartItems: Array<CartItem>;
+  private onServiceInitialize = true;
+  private currentUser: User;
+  private cart: Array<CartItem> = [];
+  cartUpdated = new BehaviorSubject<Array<CartItem>>(this.cart);
 
-  cartItemsUpdated = new BehaviorSubject<Array<CartItem>>(null);
-
-  constructor() {
+  constructor(
+    private localStorageService: LocalStorageService,
+    private authService: AuthService,
+    private httpService: HttpService
+  ) {
     // before closing app save cart data into local storage
     window.onbeforeunload = () => {
-      this.save();
+      this.saveCart();
     };
+  }
+
+  initService(): void {
+    this.authService.currentUser.subscribe((currentUser) => {
+      // if (!this.onServiceInitialize) this.saveCart(); // saving cart before user login/logout.
+      this.currentUser = currentUser;
+      this.loadCart();
+    });
+    this.onServiceInitialize = false;
   }
 
   addItem(item: Item): void {
     const itemIndex = this.getItemIndex(item);
-    if (itemIndex !== -1) this.cartItems[itemIndex].quantity++;
-    else this.cartItems.push({ item, quantity: 1 });
-    this.streamItems();
+    if (itemIndex !== -1) this.cart[itemIndex].quantity++;
+    else this.cart.push({ item, quantity: 1 });
+    this.streamCart();
   }
 
   subtractItem(item: Item): void {
     const itemIndex = this.getItemIndex(item);
     if (itemIndex !== -1) {
-      if (this.cartItems[itemIndex].quantity > 1)
-        this.cartItems[itemIndex].quantity--;
+      if (this.cart[itemIndex].quantity > 1) this.cart[itemIndex].quantity--;
+      this.streamCart();
     }
-    this.streamItems();
   }
 
   removeItem(item: Item): void {
     const itemIndex = this.getItemIndex(item);
-    if (itemIndex !== -1) this.cartItems.splice(itemIndex, 1);
-    this.streamItems();
+    if (itemIndex !== -1) this.cart.splice(itemIndex, 1);
+    this.streamCart();
   }
 
   clearItems(): void {
-    this.cartItems = [];
-    this.streamItems();
+    this.cart = [];
+    this.streamCart();
   }
 
-  loadItems(): void {
-    this.cartItems =
-      JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_KEY)) ?? [];
-    this.streamItems();
+  loadCart(): void {
+    if (!this.currentUser) {
+      this.cart =
+        this.localStorageService.load(LocalStorageKeys.CART_KEY) ?? [];
+      this.streamCart();
+    } else {
+      this.httpService
+        .fetchCart(this.currentUser.getToken())
+        .pipe(
+          tap(console.log),
+          map((cart) =>
+            cart.map((book) => {
+              return { item: book.book, quantity: book.quantity };
+            })
+          )
+        )
+        .subscribe((cartItems) => {
+          this.cart = cartItems;
+          this.streamCart();
+        });
+    }
+  }
+
+  private saveCart(): void {
+    if (!this.currentUser)
+      this.localStorageService.save(LocalStorageKeys.CART_KEY, this.cart);
+    else {
+      const userCart = this.modifyUserCart();
+      this.httpService
+        .saveCart(this.currentUser.getToken(), userCart)
+        .subscribe(console.log);
+    }
   }
 
   getItemIndex(item: Item): number {
-    return this.cartItems.findIndex((i) => i.item.id === item.id);
+    return this.cart.findIndex((i) => i.item._id === item._id);
   }
 
-  private streamItems(): void {
-    this.cartItemsUpdated.next(this.cartItems);
+  private streamCart(): void {
+    this.cartUpdated.next(this.cart);
   }
 
-  private save(): void {
-    localStorage.setItem(
-      this.LOCAL_STORAGE_KEY,
-      JSON.stringify(this.cartItems)
-    );
+  private modifyUserCart(): Array<any> {
+    return this.cart.map((item) => {
+      return { bookId: item.item._id, quantity: item.quantity };
+    });
   }
 }

@@ -11,5 +11,7 @@ router.post(
   usersController.signIn
 );
 router.post('/signout', userAuth, usersController.signOut);
+router.get('/cart', userAuth, usersController.getCart);
+router.put('/cart', userAuth, usersController.saveCart);
 
 module.exports = router;

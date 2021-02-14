@@ -73,19 +73,14 @@ $innerMargin: 1rem
     grid-column: 1
 
     .addToCart-button
-        background: map-get($colors,header)
-        padding: 0.8rem
-        border-radius: 10px
-        cursor: pointer
-
+        @include button()
+        
         &:hover
-            box-shadow: 0 0 7px darken(map-get($colors,header),25%)
-            transition: box-shadow 10ms linear
-    
+            @include button-hover()
+            
         &:active
-            color: map-get($colors,header)
-            background-color: darken(map-get($colors,content),5%)
-
+            @include button-active()
+            
     .checked-icon
         width: 3rem
         height: 3rem

@@ -17,6 +17,20 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  cart: [
+    {
+      bookId: {
+        type: String,
+        required: true,
+      },
+      qunatity: {
+        type: Number,
+        required: true,
+        min: 0,
+        default: 0,
+      },
+    },
+  ],
   tokens: [
     {
       token: {
@@ -37,7 +51,7 @@ userSchema.methods.generateAuthToken = async function () {
   const token = jwt.sign(
     { userName: this.userName, isAdmin: this.isAdmin },
     process.env.JWT_SECRET,
-    { expiresIn: '7 days' }
+    { expiresIn: '1d' }
   );
   this.tokens.push({ token });
   await this.save();
@@ -46,9 +60,15 @@ userSchema.methods.generateAuthToken = async function () {
 
 userSchema.methods.removeToken = async function (token) {
   const index = this.tokens.findIndex((t) => t.token === token);
-  this.tokens.splice(index, 1);
+  if (index !== -1) {
+    this.tokens.splice(index, 1);
+    await this.save();
+  }
+};
+
+userSchema.methods.saveCart = async function (cart) {
+  this.cart = cart;
   await this.save();
-  return true;
 };
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,8 +1,60 @@
 @import '../sass_partials/_shared-variables'
 
+$formFontSize : 1.3rem
+$innerMargin: 1.1rem
+
 .main-container
     @include main-container()
 
 .content-container
     @include content-container()
+
+.title
+    text-align: center
     
+.sign-form
+    width: 30rem
+    margin: $innerMargin * 2 auto
+    padding: $innerMargin - 1rem  0 $innerMargin 
+    border-radius: 15px
+    font-size: $formFontSize
+    @include borderStyle()
+    
+    .form-row
+        @include basicFlex()
+        margin-top: $innerMargin * 2
+
+        &:not(:last-of-type)
+           margin-top: $innerMargin
+
+        input
+            outline: none
+            border: none
+            padding: 5px    
+            border-radius: 5px
+            margin-left: $innerMargin
+        
+        .invalid-input
+            border: 2px solid #ff5454
+
+        .button   
+            @include button()
+            cursor: initial
+            font-size: $formFontSize - 0.2rem
+            padding: 0.5rem
+            margin: 0 $innerMargin
+            border: none
+            outline: none
+
+            &:active
+                @include button-active()
+
+        .button-hovered
+            @include button-hover()
+            cursor: pointer
+                             
+        &:nth-of-type(2)        
+            input
+                position: relative
+                left: 0.3rem
+                       

@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
 import { Book, BooksService } from './books.service';
 
 const connectionString = 'http://localhost:8080';
@@ -11,17 +10,34 @@ export class HttpService {
   constructor(private booksService: BooksService, private http: HttpClient) {}
 
   fetchBooks(): Observable<Book[]> {
-    return this.http.get<Array<any>>(connectionString + '/books').pipe(
-      map((books) => {
-        return books.map(this.modifyIdProperty);
-      })
-    );
+    return this.http.get<Array<Book>>(connectionString + '/books');
   }
 
-  private modifyIdProperty(book: any): Book {
-    const modifiedBook = Object.assign({}, book);
-    modifiedBook.id = modifiedBook._id;
-    delete modifiedBook._id;
-    return modifiedBook as Book;
+  login(data: any, loginPath: string): Observable<any> {
+    return this.http.post<any>(connectionString + '/users/' + loginPath, data);
+  }
+
+  logout(token: string): Observable<void> {
+    return this.http.post<void>(connectionString + '/users/signout', null, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+  }
+
+  fetchCart(token: string): Observable<any> {
+    return this.http.get(connectionString + '/users/cart', {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+  }
+
+  saveCart(token: string, cart: Array<any>): Observable<any> {
+    return this.http.put(connectionString + '/users/cart', cart, {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+    });
   }
 }

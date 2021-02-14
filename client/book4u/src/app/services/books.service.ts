@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export interface Book {
-  id: string;
+  _id: string;
   imageUrl: string;
   title: string;
   author: string;
@@ -31,6 +31,6 @@ export class BooksService {
   }
 
   getBookById(id: string): Book {
-    return this.books.find((b) => b.id === id);
+    return this.books.find((b) => b._id === id);
   }
 }

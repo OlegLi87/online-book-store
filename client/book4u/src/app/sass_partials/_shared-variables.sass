@@ -1,4 +1,5 @@
 $colors : (content:#d9d1bd,header: hsl(24, 53,55 ),greenColor: #0f8816)
+$buttonShadowOnHover : 0 0 7px darken(map-get($colors,header),25%)
 
 @mixin basicFlex()
   display: flex
@@ -14,6 +15,23 @@ $colors : (content:#d9d1bd,header: hsl(24, 53,55 ),greenColor: #0f8816)
    height: 100%
    width: 90%
    margin: 0 auto
+
+@mixin button()
+    background: map-get($colors,header)
+    padding: 0.8rem
+    border-radius: 10px
+    cursor: pointer
+
+@mixin button-hover()
+    box-shadow: $buttonShadowOnHover
+    transition: box-shadow 10ms linear
     
+@mixin button-active()
+    color: map-get($colors,header)
+    background-color: darken(map-get($colors,content),5%)
+
+@mixin borderStyle()
+       box-shadow: 0 0 8px map-get($colors,header )
+       border-radius: 25px
 
 
