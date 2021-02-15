@@ -27,7 +27,7 @@
           [(ngModel)]="formData.password"
           placeholder="password"
           required
-          minlength="7"
+          minlength="5"
           #password="ngModel"
           [ngClass]="{
             'invalid-input': !password.valid && password.touched
@@ -55,10 +55,5 @@
         </button>
       </div>
     </form>
-    <div class="loggedIn-message-container" *ngIf="currentUser">
-      <h2 class="message">
-        You're succesfully logged in as {{ currentUser.userName }}
-      </h2>
-    </div>
   </div>
 </div>

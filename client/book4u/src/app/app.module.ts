@@ -1,5 +1,7 @@
+import { cartStreamProvider } from './services/dependency-providers/cartStream.provider';
+import { booksStreamProvider } from './services/dependency-providers/booksStream.provider';
+import { userStreamProvider } from './services/dependency-providers/userStream.provider';
 import { HttpClientModule } from '@angular/common/http';
-import { BooksService } from './services/books.service';
 import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
 import { SharedComponentsModule } from './shared-components/sharedComponents.module';
@@ -14,17 +16,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BookPageComponent } from './book-page/book-page.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 // load books on app initialization
-function fetchBooks(httpService: HttpService, booksService: BooksService): any {
+function fetchBooks(httpService: HttpService): any {
   return (): Promise<void> => {
-    return new Promise<void>((res) => {
-      const subs = httpService.fetchBooks().subscribe((books) => {
-        booksService.setBooks(books);
-        subs.unsubscribe();
-        res();
-      });
-    });
+    return httpService.fetchBooks();
   };
 }
 
@@ -48,6 +45,7 @@ function intializeCart(cartService: CartService): any {
     CartComponent,
     NotFoundComponent,
     BookPageComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +59,7 @@ function intializeCart(cartService: CartService): any {
     {
       provide: APP_INITIALIZER,
       useFactory: fetchBooks,
-      deps: [HttpService, BooksService],
+      deps: [HttpService],
       multi: true,
     },
     {
@@ -76,6 +74,9 @@ function intializeCart(cartService: CartService): any {
       deps: [CartService],
       multi: true,
     },
+    booksStreamProvider,
+    userStreamProvider,
+    cartStreamProvider,
   ],
   bootstrap: [AppComponent],
 })

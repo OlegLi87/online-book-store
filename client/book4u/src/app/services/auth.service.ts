@@ -1,9 +1,11 @@
+import { CartService } from './cart.service';
 import { LocalStorageKeys, LocalStorageService } from './localStorage.service';
 import { HttpService } from './http.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FormData } from '../login/login.component';
 import jwt_decode from 'jwt-decode';
+import { USER_STREAM } from './dependency-providers/userStream.provider';
 
 export class User {
   private token;
@@ -22,11 +24,11 @@ export class User {
   providedIn: 'root',
 })
 export class AuthService {
-  currentUser = new BehaviorSubject<User>(null);
-
   constructor(
     private httpService: HttpService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private cartService: CartService,
+    @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>
   ) {}
 
   initCurrentUser(): void {
@@ -44,10 +46,12 @@ export class AuthService {
   }
 
   logout(): void {
-    const token = this.currentUser.value.getToken();
-    this.httpService.logout(token).subscribe(() => {
-      this.localStorageService.remove(LocalStorageKeys.TOKEN_KEY);
-      this.currentUser.next(null);
+    this.cartService.saveCart(true).then(() => {
+      const token = this.userStream$.value.getToken();
+      this.httpService.logout(token).subscribe(() => {
+        this.localStorageService.remove(LocalStorageKeys.TOKEN_KEY);
+        this.userStream$.next(null);
+      });
     });
   }
 
@@ -55,7 +59,7 @@ export class AuthService {
     const payload = jwt_decode(token) as any;
     const user = new User(payload.userName, payload.isAdmin);
     user.setToken(token);
-    this.currentUser.next(user);
+    this.userStream$.next(user);
   }
 
   private isValidToken(token): boolean {

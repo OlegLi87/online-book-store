@@ -1,0 +1,19 @@
+<div class="main-container">
+  <div class="content-container">
+    <h1 class="title">Books stock management board</h1>
+    <table class="manage-table">
+      <thead>
+        <th class="cell header" *ngFor="let key of getKeys()">
+          {{ key }}
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of booksStream$.value">
+          <td class="cell data" *ngFor="let key of getKeys()">
+            <input type="text" [value]="book[key]" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

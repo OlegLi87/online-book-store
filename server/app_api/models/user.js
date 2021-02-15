@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
       },
-      qunatity: {
+      quantity: {
         type: Number,
         required: true,
         min: 0,

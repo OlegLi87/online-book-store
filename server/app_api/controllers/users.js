@@ -44,7 +44,9 @@ async function getCart(req, res, next) {
       );
     }
     res.send(cart);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function saveCart(req, res, next) {

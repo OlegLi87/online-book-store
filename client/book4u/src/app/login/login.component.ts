@@ -1,5 +1,7 @@
 import { AuthService, User } from './../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { USER_STREAM } from '../services/dependency-providers/userStream.provider';
 
 export interface FormData {
   userName: string;
@@ -18,10 +20,13 @@ export class LoginComponent implements OnInit {
   };
   currentUser: User;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>
+  ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe((currentUser) => {
+    this.userStream$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
   }

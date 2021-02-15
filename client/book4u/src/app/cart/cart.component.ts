@@ -1,7 +1,11 @@
-import { Subscription } from 'rxjs';
-import { Book } from './../services/books.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CartItem, CartService } from './../services/cart.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../services/auth.service';
+import { USER_STREAM } from '../services/dependency-providers/userStream.provider';
+import { Book } from '../models/book.model';
+import { CART_STREAM } from '../services/dependency-providers/cartStream.provider';
 
 @Component({
   selector: 'app-cart',
@@ -12,10 +16,15 @@ export class CartComponent implements OnInit, OnDestroy {
   cartItems: Array<{ book: Book; quantity: number }>;
   private subscription: Subscription;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>,
+    @Inject(CART_STREAM) private cartStream$: BehaviorSubject<Array<CartItem>>
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.cartService.cartUpdated.subscribe(
+    this.subscription = this.cartStream$.subscribe(
       this.setCartItems.bind(this)
     );
   }
@@ -41,8 +50,11 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   pay(): void {
-    alert('Thanks for purchasing!!!');
-    this.clearItems(false);
+    if (!this.userStream$.value) this.router.navigate(['/login']);
+    else {
+      alert('Thanks for purchasing!!!');
+      this.clearItems(false);
+    }
   }
 
   clearItems(askToClear = true): void {

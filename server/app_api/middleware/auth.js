@@ -6,11 +6,12 @@ async function userAuth(req, res, next) {
   try {
     const authField = req.headers.authorization;
     const token = authField.slice('Bearer'.length + 1);
-    let payload = jwt.verify(token, process.env.JWT_SECRET);
-    // jwt.verify(token, process.env.JWT_SECRET, null, function (err, decoded) {
-    //   if (err) tryToRemoveInvalidToken(token);
-    //   else if (decoded) payload = decoded;
-    // });
+    let payload;
+    jwt.verify(token, process.env.JWT_SECRET, null, function (err, decoded) {
+      // in case token is not valid try to find and delete him from the list of user tokens.
+      if (err) tryToRemoveInvalidToken(token);
+      else if (decoded) payload = decoded;
+    });
     const user = await findUser(payload.userName);
     if (!user) throw 'authError';
     const index = user.tokens.findIndex((t) => t.token === token);

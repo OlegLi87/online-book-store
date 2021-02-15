@@ -1,9 +1,11 @@
-import { map, tap } from 'rxjs/operators';
-import { AuthService, User } from './auth.service';
+import { map, pairwise, startWith } from 'rxjs/operators';
 import { LocalStorageKeys, LocalStorageService } from './localStorage.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from './http.service';
+import { USER_STREAM } from './dependency-providers/userStream.provider';
+import { User } from './auth.service';
+import { CART_STREAM } from './dependency-providers/cartStream.provider';
 
 type Item = {
   _id: string;
@@ -20,29 +22,27 @@ export interface CartItem {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private onServiceInitialize = true;
-  private currentUser: User;
   private cart: Array<CartItem> = [];
-  cartUpdated = new BehaviorSubject<Array<CartItem>>(this.cart);
 
   constructor(
+    private httpService: HttpService,
     private localStorageService: LocalStorageService,
-    private authService: AuthService,
-    private httpService: HttpService
-  ) {
-    // before closing app save cart data into local storage
-    window.onbeforeunload = () => {
-      this.saveCart();
-    };
-  }
+    @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>,
+    @Inject(CART_STREAM) private cartStream$: BehaviorSubject<Array<CartItem>>
+  ) {}
 
   initService(): void {
-    this.authService.currentUser.subscribe((currentUser) => {
-      // if (!this.onServiceInitialize) this.saveCart(); // saving cart before user login/logout.
-      this.currentUser = currentUser;
-      this.loadCart();
-    });
-    this.onServiceInitialize = false;
+    this.userStream$
+      .pipe(startWith(null), pairwise())
+      .subscribe(([prev, latest]) => {
+        if (!prev && latest) this.saveCart(false); // In case user logged in saving cart to local storage.
+        this.loadCart();
+      });
+
+    // before closing app save the cart.
+    window.onbeforeunload = () => {
+      this.saveCart(!!this.userStream$.value); // converting to boolean type.
+    };
   }
 
   addItem(item: Item): void {
@@ -72,15 +72,14 @@ export class CartService {
   }
 
   loadCart(): void {
-    if (!this.currentUser) {
+    if (!this.userStream$.value) {
       this.cart =
         this.localStorageService.load(LocalStorageKeys.CART_KEY) ?? [];
       this.streamCart();
     } else {
       this.httpService
-        .fetchCart(this.currentUser.getToken())
+        .fetchCart(this.userStream$.value.getToken())
         .pipe(
-          tap(console.log),
           map((cart) =>
             cart.map((book) => {
               return { item: book.book, quantity: book.quantity };
@@ -94,15 +93,20 @@ export class CartService {
     }
   }
 
-  private saveCart(): void {
-    if (!this.currentUser)
-      this.localStorageService.save(LocalStorageKeys.CART_KEY, this.cart);
-    else {
-      const userCart = this.modifyUserCart();
-      this.httpService
-        .saveCart(this.currentUser.getToken(), userCart)
-        .subscribe(console.log);
-    }
+  saveCart(remoteSave: boolean): Promise<void> {
+    return new Promise((res) => {
+      if (!remoteSave) {
+        this.localStorageService.save(LocalStorageKeys.CART_KEY, this.cart);
+        res();
+      } else {
+        const userCart = this.modifyUserCart();
+        this.httpService
+          .saveCart(this.userStream$.value.getToken(), userCart)
+          .subscribe(() => {
+            res();
+          });
+      }
+    });
   }
 
   getItemIndex(item: Item): number {
@@ -110,7 +114,7 @@ export class CartService {
   }
 
   private streamCart(): void {
-    this.cartUpdated.next(this.cart);
+    this.cartStream$.next(this.cart);
   }
 
   private modifyUserCart(): Array<any> {

@@ -1,7 +1,10 @@
 import { CartService } from './../services/cart.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Book } from '../services/books.service';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../services/auth.service';
+import { USER_STREAM } from '../services/dependency-providers/userStream.provider';
+import { Book } from '../models/book.model';
 
 @Component({
   selector: 'app-book-page',
@@ -13,7 +16,8 @@ export class BookPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cartService: CartService
+    private cartService: CartService,
+    @Inject(USER_STREAM) readonly userStream$: BehaviorSubject<User>
   ) {}
 
   ngOnInit(): void {

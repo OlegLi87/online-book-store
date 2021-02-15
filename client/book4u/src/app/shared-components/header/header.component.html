@@ -7,6 +7,14 @@
       </div></a
     >
   </div>
+  <div
+    class="to-dashboard-button-container"
+    *ngIf="isAdmin()"
+    [routerLinkActive]="'activeDashboard'"
+    [routerLink]="'/adminDashboard'"
+  >
+    Management Dashboard
+  </div>
   <div class="rightSide-container">
     <div class="greeting-container">
       Hello,{{ currentUser ? currentUser.userName : "guest" }}

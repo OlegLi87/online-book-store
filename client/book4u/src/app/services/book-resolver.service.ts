@@ -1,21 +1,22 @@
-import { Observable } from 'rxjs';
-import { Book, BooksService } from './books.service';
 import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Location } from '@angular/common';
+import { Book } from '../models/book.model';
+import { BehaviorSubject } from 'rxjs';
+import { BOOKS_STREAM } from './dependency-providers/booksStream.provider';
 
 @Injectable({ providedIn: 'root' })
 export class BookResolver implements Resolve<Book> {
   constructor(
-    private booksService: BooksService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    @Inject(BOOKS_STREAM) private booksStream$: BehaviorSubject<Array<Book>>
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Book {
     const path = this.location.path();
     const id = route.paramMap.get('id');
-    const book = this.booksService.getBookById(id);
+    const book = this.booksStream$.value.find((b) => b._id === id);
     if (!book)
       this.router
         .navigate(['/notFound'], {
