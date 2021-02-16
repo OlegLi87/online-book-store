@@ -25,7 +25,7 @@ async function userAuth(req, res, next) {
 }
 
 function adminAuth(req, res, next) {
-  if (!req.user.admin)
+  if (!req.user.isAdmin)
     return next(new ResponseError('Admin authorization failed', 401));
   next();
 }

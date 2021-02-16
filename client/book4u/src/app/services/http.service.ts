@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Book } from '../models/book.model';
+import { User } from './auth.service';
 import { BOOKS_STREAM } from './dependency-providers/booksStream.provider';
+import { USER_STREAM } from './dependency-providers/userStream.provider';
 
 const connectionString = 'http://localhost:8080';
 
@@ -11,7 +13,8 @@ export class HttpService {
   private AUTH_METHOD = 'Bearer ';
   constructor(
     private http: HttpClient,
-    @Inject(BOOKS_STREAM) private booksStream$: BehaviorSubject<Array<Book>>
+    @Inject(BOOKS_STREAM) private booksStream$: BehaviorSubject<Array<Book>>,
+    @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>
   ) {}
 
   fetchBooks(): Promise<void> {
@@ -35,14 +38,14 @@ export class HttpService {
       .subscribe(this.fetchBooks.bind(this));
   }
 
-  updateBook(token: string, book: Book, updateData: any): void {
+  updateBook(book: Book, updateData: any): void {
     this.http
       .put<Observable<Book>>(
         connectionString + '/books/' + book._id,
         updateData,
         {
           headers: new HttpHeaders({
-            Authorization: this.AUTH_METHOD + token,
+            Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
           }),
         }
       )
