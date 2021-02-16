@@ -1,19 +1,26 @@
 <div class="main-container">
   <div class="content-container">
     <h1 class="title">Books stock management board</h1>
-    <table class="manage-table">
-      <thead>
-        <th class="cell header" *ngFor="let key of getKeys()">
-          {{ key }}
-        </th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let book of booksStream$.value">
-          <td class="cell data" *ngFor="let key of getKeys()">
-            <input type="text" [value]="book[key]" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="books-list-container">
+      <div class="books-toggle-button" (click)="toggleListView($event)">
+        Books to edit
+      </div>
+      <div #booksList class="books-list">
+        <div
+          class="books-list-item"
+          *ngFor="let book of booksStream$.value"
+          (click)="bookSelected(book)"
+        >
+          <div
+            class="image-container"
+            [ngStyle]="{
+              backgroundImage: 'url(' + book.imageUrl + ')'
+            }"
+          ></div>
+          <h3 class="title">{{ book.title }}</h3>
+        </div>
+      </div>
+    </div>
+    <app-book-edit *ngIf="selectedBook" [book]="selectedBook"></app-book-edit>
   </div>
 </div>

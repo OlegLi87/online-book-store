@@ -1,5 +1,7 @@
 @import '../sass_partials/_shared-variables'
 
+$booksListHeight: 40vh
+
 .main-container
     @include main-container()
 
@@ -9,11 +11,83 @@
 .title
     text-align: center
 
-.manage-table
-    
-    *
-     border: thin solid black
+.books-list-container
+    position: relative
+    max-width: fit-content
+    margin: 1.5rem auto
 
-.data
-   word-break: break-word
+.books-toggle-button
+    @include button()
+    width: 25rem
+    font-size: 1.3rem
     
+    &:hover
+        @include button-hover()
+        
+    &:active
+        @include button-active()
+
+.books-list
+    position: absolute
+    top: 4rem
+    height: 0
+    overflow-y: scroll
+    background-color: darken(map-get($colors,content),10%)
+    border-radius: 25px
+    
+    &::-webkit-scrollbar-track
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+        background-color: #F5F5F5
+        border-radius: 10px
+
+    &::-webkit-scrollbar
+        width: 10px
+        background-color: #F5F5F5
+        border-radius: 10px
+
+    &::-webkit-scrollbar-thumb
+        background-color: map-get($colors,header)
+        border-radius: 10px
+        
+.books-list-item
+    @include basicFlex()
+    justify-content: space-between
+    padding: 0 1rem
+    cursor: pointer
+
+    &:hover
+        background: darken(map-get($colors,content),20%)
+        transition: background 150ms 
+    
+    .image-container
+        width: 3rem
+        height: 3rem
+        border-radius: 50%
+        background-size: cover
+        background-repeat: no-repeat
+
+    &:not(:last-of-type)
+        border-bottom: thin solid darken(map-get($colors,header),10%)
+        
+
+.unWrap
+    animation: unWrap 350ms forwards
+
+.wrap
+    animation: wrap 350ms forwards
+    
+@keyframes unWrap
+    0%
+        height:0
+
+    100%
+        height: $booksListHeight
+
+
+@keyframes wrap
+    0%
+        height:$booksListHeight
+
+    100%
+        height: 0
+        

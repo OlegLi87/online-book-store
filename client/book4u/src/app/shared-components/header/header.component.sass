@@ -34,7 +34,7 @@ $innerContainerMargin : 0.8rem
      outline: none   
   
 .leftSide-container 
-    margin-left: 2rem
+    margin-left: $innerContainerMargin + 1.5rem
 
 .store-logo-title-container 
     @include flex
@@ -77,7 +77,7 @@ $innerContainerMargin : 0.8rem
     @include buttonStyle()
     width: 18rem
     height: 80%
-    margin-right: $innerContainerMargin
+    margin-right: $innerContainerMargin + 1.5rem
     
     .active-link
       color: lightenBackground(35%) 

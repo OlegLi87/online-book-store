@@ -4,7 +4,7 @@ import { InjectionToken } from '@angular/core';
 export const BOOKS_STREAM = new InjectionToken('Stream of app books');
 
 export function BooksStreamFactory(): BehaviorSubject<Array<Book>> {
-  return new BehaviorSubject<Array<Book>>([]);
+  return new BehaviorSubject<Array<Book>>(null);
 }
 
 export const booksStreamProvider = {

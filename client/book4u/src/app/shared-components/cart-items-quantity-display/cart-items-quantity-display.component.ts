@@ -38,16 +38,23 @@ export class CartItemsQuantityDisplayComponent
   private changeDisplayValue(cartItems: Array<CartItem>): void {
     const firstChange = !this.cartItems;
     if (!firstChange && this.cartItems.length === cartItems.length) return;
+    if (!firstChange)
+      this.createVisualEffect(this.cartItems.length - cartItems.length);
     this.cartItems = [...cartItems];
-    if (!firstChange) this.createVisualEffect();
   }
 
-  private createVisualEffect(): void {
+  private createVisualEffect(val: number): void {
+    const upDown = val > 0 ? 'down' : 'up';
     this.display.nativeElement.classList.add(this.ON_UPDATE_CLASS);
-    setTimeout(
-      () => this.display.nativeElement.classList.remove(this.ON_UPDATE_CLASS),
-      150
-    );
+    this.display.nativeElement.classList.add(upDown);
+
+    let effectDuration = 150;
+    if (upDown === 'down') effectDuration = 350;
+
+    setTimeout(() => {
+      this.display.nativeElement.classList.remove(this.ON_UPDATE_CLASS);
+      this.display.nativeElement.classList.remove(upDown);
+    }, effectDuration);
   }
 
   ngOnDestroy(): void {

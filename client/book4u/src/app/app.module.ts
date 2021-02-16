@@ -1,4 +1,9 @@
-import { cartStreamProvider } from './services/dependency-providers/cartStream.provider';
+import { CartItem } from 'src/app/services/cart.service';
+import { BehaviorSubject } from 'rxjs';
+import {
+  cartStreamProvider,
+  CART_STREAM,
+} from './services/dependency-providers/cartStream.provider';
 import { booksStreamProvider } from './services/dependency-providers/booksStream.provider';
 import { userStreamProvider } from './services/dependency-providers/userStream.provider';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,6 +22,7 @@ import { BookPageComponent } from './book-page/book-page.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { BookEditComponent } from './admin-dashboard/book-edit/book-edit.component';
 
 // load books on app initialization
 function fetchBooks(httpService: HttpService): any {
@@ -32,9 +38,21 @@ function initializeUser(authService: AuthService) {
 }
 
 // load cart data on app initialization
-function intializeCart(cartService: CartService): any {
-  return () => {
-    cartService.initService();
+function intializeCart(
+  cartService: CartService,
+  cartStream$: BehaviorSubject<Array<CartItem>>
+): any {
+  return (): Promise<void> => {
+    return new Promise((res) => {
+      cartService.initService();
+      let subs;
+      subs = cartStream$.subscribe((cart) => {
+        if (Array.isArray(cart)) {
+          subs?.unsubscribe(); // in case cart loading was synchronous -> subs=undefined.
+          res();
+        }
+      });
+    });
   };
 }
 
@@ -46,6 +64,7 @@ function intializeCart(cartService: CartService): any {
     NotFoundComponent,
     BookPageComponent,
     AdminDashboardComponent,
+    BookEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +90,7 @@ function intializeCart(cartService: CartService): any {
     {
       provide: APP_INITIALIZER,
       useFactory: intializeCart,
-      deps: [CartService],
+      deps: [CartService, CART_STREAM],
       multi: true,
     },
     booksStreamProvider,
