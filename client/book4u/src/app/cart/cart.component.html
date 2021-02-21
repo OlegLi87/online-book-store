@@ -1,5 +1,9 @@
 <div class="main-container">
   <div class="content-container">
+    <app-confirm-modal
+      *ngIf="showModal"
+      [question]="modalQuestion"
+    ></app-confirm-modal>
     <svg
       id="cart-image"
       enable-background="new 0 0 512 512"

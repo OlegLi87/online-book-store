@@ -16,7 +16,7 @@ const bookSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    minLength: 100,
+    minLength: 25,
   },
   category: {
     type: [

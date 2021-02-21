@@ -1,4 +1,4 @@
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { CartItem, CartService } from './../services/cart.service';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { User } from '../services/auth.service';
 import { USER_STREAM } from '../services/dependency-providers/userStream.provider';
 import { Book } from '../models/book.model';
 import { CART_STREAM } from '../services/dependency-providers/cartStream.provider';
+import { MODAL_ANSWER_STREAM } from '../services/dependency-providers/modalAnswerStream.provider';
 
 @Component({
   selector: 'app-cart',
@@ -14,17 +15,20 @@ import { CART_STREAM } from '../services/dependency-providers/cartStream.provide
 })
 export class CartComponent implements OnInit, OnDestroy {
   cartItems: Array<{ book: Book; quantity: number }>;
-  private subscription: Subscription;
+  showModal: boolean;
+  modalQuestion = 'Sure to clear all items?';
+  private cartStreamSubscription: Subscription;
 
   constructor(
     private router: Router,
     private cartService: CartService,
     @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>,
-    @Inject(CART_STREAM) private cartStream$: BehaviorSubject<Array<CartItem>>
+    @Inject(CART_STREAM) private cartStream$: BehaviorSubject<Array<CartItem>>,
+    @Inject(MODAL_ANSWER_STREAM) private modalAnswerStream$: Subject<boolean>
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.cartStream$.subscribe(
+    this.cartStreamSubscription = this.cartStream$.subscribe(
       this.setCartItems.bind(this)
     );
   }
@@ -58,10 +62,14 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   clearItems(askToClear = true): void {
-    let response = true;
-    if (askToClear)
-      response = confirm('Are you sure you want to clear a whole cart?');
-    if (response) this.cartService.clearItems();
+    if (askToClear) {
+      this.showModal = true;
+      const subscription = this.modalAnswerStream$.subscribe((answer) => {
+        if (answer) this.cartService.clearItems();
+        this.showModal = false;
+        subscription.unsubscribe();
+      });
+    } else this.cartService.clearItems();
   }
 
   private setCartItems(cartItems: Array<CartItem>): void {
@@ -75,6 +83,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.cartStreamSubscription.unsubscribe();
+    this.cartService.saveCart(!!this.userStream$.value);
   }
 }

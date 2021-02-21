@@ -29,7 +29,7 @@ $greenColor: map-get($colors,greenColor)
         @include basicFlex()
         justify-content: space-between
         height: $imageHeight + 1rem
-        width: 80%
+        width: 49rem
         margin: 1rem auto
         @include borderStyle()
         
@@ -45,15 +45,15 @@ $greenColor: map-get($colors,greenColor)
                  flex-shrink: 0 
               
              .info
+                 width: 18.75rem
                  font-size: $infoFontSize
-                 flex-shrink: 5
        
         .quantity-total-price-container
               @include basicFlex()
               justify-content: flex-start
               width: 21rem
               height:$imageHeight
-              margin:0 $fromBorderMargin 0 $fromBorderMargin + 2rem
+              margin-right: 1rem            
         
               .quantity-container
                    @include basicFlex()
@@ -63,18 +63,12 @@ $greenColor: map-get($colors,greenColor)
                         @include basicFlex()
                 
                         input
+                            @include input-style
+                            width: 7rem
                             padding: 0.3rem
                             margin-left: 0.5rem
-                            font-size: $infoFontSize - 0.3rem
-                            background: darken(map-get($colors,content),15%)
-                            border: none
-                            border-radius: 25px
-                            width: 7rem
-                            text-align: center
-
-                            &:focus
-                               outline: none
-
+                            font-size: $infoFontSize - 0.3rem    
+                                   
                    .quantity-change-container
                            @include basicFlex()
                            flex-direction: column
@@ -96,6 +90,7 @@ $greenColor: map-get($colors,greenColor)
                         
                     
               .price-container
+                    width: 4.875rem
                     margin-left: $fromBorderMargin      
                     color: $greenColor
                     font-size: $infoFontSize - 0.1rem

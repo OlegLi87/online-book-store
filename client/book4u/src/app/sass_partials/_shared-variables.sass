@@ -1,22 +1,22 @@
 $colors : (content:#d9d1bd,header: hsl(24, 53,55 ),greenColor: #0f8816)
 $buttonShadowOnHover : 0 0 7px darken(map-get($colors,header),25%)
 
-@mixin basicFlex()
-  display: flex
-  justify-content: center
-  align-items: center
+@mixin basicFlex
+    display: flex
+    justify-content: center
+    align-items: center
   
-@mixin  main-container()
-  background: map-get($colors,content )
-  height: 100%
-  padding: 0.65rem 0
+@mixin  main-container
+    background: map-get($colors,content )
+    height: 100%
+    padding: 0.65rem 0
 
-@mixin content-container()
-   height: 100%
-   width: 90%
-   margin: 0 auto
+@mixin content-container
+    height: 100%
+    width: 90%
+    margin: 0 auto
 
-@mixin button()
+@mixin button
     background: map-get($colors,header)
     padding: 0.8rem
     border-radius: 10px
@@ -24,16 +24,50 @@ $buttonShadowOnHover : 0 0 7px darken(map-get($colors,header),25%)
     border: none
     outline: none
 
-@mixin button-hover()
+@mixin button-hover
     box-shadow: $buttonShadowOnHover
     transition: box-shadow 10ms linear
     
-@mixin button-active()
+@mixin button-active
     color: map-get($colors,header)
     background-color: darken(map-get($colors,content),5%)
 
-@mixin borderStyle()
-       box-shadow: 0 0 8px map-get($colors,header )
-       border-radius: 25px
+@mixin borderStyle
+    box-shadow: 0 0 8px map-get($colors,header )
+    border-radius: 25px
 
+@mixin modal-style
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 10000
+    background: #000000ab
 
+@mixin book-item-image-container
+    position: relative
+    height: 10rem
+    width: 8rem
+    background-size: cover
+    border-radius: 5px
+    cursor: pointer
+    outline: none
+
+    &:hover
+        box-shadow: 0 0 8px darken(map-get($colors,header),20%)
+        transition: box-shadow 100ms linear
+
+@mixin input-style
+    background: darken(map-get($colors,content),15%)
+    border: none
+    outline: none
+    border-radius: 25px
+    text-align: center                     
+   
+@mixin always-centered-style
+    position: absolute
+    top: 50%
+    left: 50%
+    z-index: 10010
+    transform: translate(-50%,-50%)

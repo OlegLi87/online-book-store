@@ -1,3 +1,4 @@
+import { modalAnswerStreamProvider } from './services/dependency-providers/modalAnswerStream.provider';
 import { CartItem } from 'src/app/services/cart.service';
 import { BehaviorSubject } from 'rxjs';
 import {
@@ -21,8 +22,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BookPageComponent } from './book-page/book-page.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { BookEditComponent } from './admin-dashboard/book-edit/book-edit.component';
 
 // load books on app initialization
 function fetchBooks(httpService: HttpService): any {
@@ -63,8 +62,6 @@ function intializeCart(
     CartComponent,
     NotFoundComponent,
     BookPageComponent,
-    AdminDashboardComponent,
-    BookEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +93,7 @@ function intializeCart(
     booksStreamProvider,
     userStreamProvider,
     cartStreamProvider,
+    modalAnswerStreamProvider,
   ],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,178 @@
+<form class="book-data-form" #form="ngForm" (submit)="save(form)">
+  <label class="text" for="title">Title</label>
+  <div class="input-data">
+    <input
+      id="title"
+      type="text"
+      #title="ngModel"
+      name="title"
+      [(ngModel)]="book.title"
+      required
+    />
+    <div class="alert-message" *ngIf="!title.valid && title.touched">
+      Title is missing
+    </div>
+  </div>
+
+  <label class="text" for="author">Author</label>
+  <div class="input-data">
+    <input
+      id="author"
+      type="text"
+      #author="ngModel"
+      name="author"
+      [(ngModel)]="book.author"
+      required
+    />
+    <div class="alert-message" *ngIf="!author.valid && author.touched">
+      Author is missing
+    </div>
+  </div>
+
+  <label class="text" for="description">Description</label>
+  <div class="input-data">
+    <textarea
+      id="description"
+      rows="5"
+      columns="50"
+      #description="ngModel"
+      name="description"
+      [(ngModel)]="book.description"
+      required
+      minlength="25"
+    ></textarea>
+    <div
+      class="alert-message"
+      *ngIf="
+        !description.valid && description.touched && !description.value.length
+      "
+    >
+      Description is missing
+    </div>
+    <div
+      class="alert-message"
+      *ngIf="
+        !description.valid && description.touched && description.value.length
+      "
+    >
+      Must have at minimum 25 symbols
+    </div>
+  </div>
+
+  <label class="text" for="imageUrl">Image Url</label>
+  <div class="input-data">
+    <textarea
+      id="imageUrl"
+      rows="2"
+      columns="50"
+      #imageUrl="ngModel"
+      name="imageUrl"
+      [(ngModel)]="book.imageUrl"
+      required
+      pattern="(https?:\/\/.*\.(?:png|jpg))"
+    ></textarea>
+    <div
+      class="alert-message"
+      *ngIf="!imageUrl.valid && imageUrl.touched && !imageUrl.value.length"
+    >
+      ImageUrl is missing
+    </div>
+    <div
+      class="alert-message"
+      *ngIf="!imageUrl.valid && imageUrl.touched && imageUrl.value.length"
+    >
+      Must conform with 'https:\\***.jpg|png' pattern
+    </div>
+  </div>
+
+  <label class="text" for="category">Category</label>
+  <div class="input-data">
+    <input
+      id="category"
+      type="text"
+      #category="ngModel"
+      name="category"
+      [(ngModel)]="book.category"
+      required
+    />
+    <div class="alert-message" *ngIf="!category.valid && category.touched">
+      Category is missing
+    </div>
+  </div>
+
+  <label class="text" for="price">Price$</label>
+  <div class="input-data">
+    <input
+      id="price"
+      type="number"
+      #price="ngModel"
+      name="price"
+      [(ngModel)]="book.price"
+      min="0"
+      required
+    />
+    <div class="alert-message" *ngIf="!price.valid && price.touched">
+      Price is missing
+    </div>
+  </div>
+
+  <label class="text">Rating</label>
+  <app-rating-stars
+    (ratingChanged)="setRating($event)"
+    [size]="{ width: '2rem', height: '2rem' }"
+    [color]="'#bdb6a4'"
+  ></app-rating-stars>
+
+  <label class="text" for="publishDate">Publish Date</label>
+  <div class="input-data">
+    <input
+      id="publishDate"
+      type="date"
+      #publishDate="ngModel"
+      name="publishDate"
+      [(ngModel)]="book.publishDate"
+      required
+    />
+    <div
+      class="alert-message"
+      *ngIf="!publishDate.valid && publishDate.touched"
+    >
+      Publish date is missing
+    </div>
+  </div>
+
+  <label class="text" for="arrivalDate">Arrival Date</label>
+  <div class="input-data">
+    <input
+      id="arrivalDate"
+      type="date"
+      #arrivalDate="ngModel"
+      name="arrivalDate"
+      [ngModel]="'2020 - 05 - 15'"
+      required
+    />
+    <div
+      class="alert-message"
+      *ngIf="!arrivalDate.valid && arrivalDate.touched"
+    >
+      Arrival date is missing
+    </div>
+  </div>
+
+  <div class="buttons-row">
+    <button
+      type="submit"
+      class="button create"
+      [disabled]="!form.valid"
+      [ngClass]="{
+        disabled: !form.valid
+      }"
+    >
+      {{ book._id ? "Update" : "Create" }}
+    </button>
+    <button class="button clear" type="reset">Clear</button>
+    <button class="button back" type="button" (click)="modalClosed.next()">
+      Back
+    </button>
+  </div>
+</form>

@@ -14,3 +14,31 @@
     display: flex
     flex-wrap: wrap
     justify-content: space-evenly
+
+.new-book-container
+    @include basicFlex()
+    @include book-item-image-container()
+    background: map-get($colors,header)
+    opacity: 0.5
+    margin: 1rem 0.8rem
+    box-shadow: 0 0 8px darken(map-get($colors,header),20%)
+
+    &:hover
+        svg
+            fill: #fff
+            transform: rotate(180deg)
+            transform-origin: center center
+            transition: fill 100ms 0s linear,transform 500ms 0s ease-in
+
+        .text-container
+            color: #fff
+            text-shadow: 0 0 5px #fff
+
+    .icon-container
+       width: 4rem
+
+    .text-container
+        position: absolute
+        font-size: 1.2rem
+        bottom: 1rem
+    

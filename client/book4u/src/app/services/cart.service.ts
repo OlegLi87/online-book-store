@@ -78,7 +78,7 @@ export class CartService {
       this.streamCart();
     } else {
       this.httpService
-        .fetchCart(this.userStream$.value.getToken())
+        .fetchCart()
         .pipe(
           map((cart) =>
             cart.map((book) => {
@@ -100,11 +100,9 @@ export class CartService {
         res();
       } else {
         const userCart = this.modifyUserCart();
-        this.httpService
-          .saveCart(this.userStream$.value.getToken(), userCart)
-          .subscribe(() => {
-            res();
-          });
+        this.httpService.saveCart(userCart).subscribe(() => {
+          res();
+        });
       }
     });
   }

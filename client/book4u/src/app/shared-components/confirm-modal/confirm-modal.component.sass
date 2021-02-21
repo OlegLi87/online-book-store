@@ -1,0 +1,38 @@
+@import '../../sass_partials/_shared-variables'
+
+:host
+    @include modal-style
+
+.dialog-container
+    @include always-centered-style
+    width: 25rem
+    height: 11rem
+    background: map-get($colors,content)
+    border-radius: 25px
+
+    .question
+        text-align: center
+
+    .buttons-container
+        @include basicFlex
+        margin: 3.5rem auto
+        width: 60%
+        justify-content: space-around
+
+        .button
+           @include button
+           padding-left: 2rem
+           padding-right: 2rem
+           color: #fff
+
+        .yes
+            background: red
+            &:hover
+                box-shadow: 0 0 5px red
+
+        .no
+            background: green
+            &:hover
+                box-shadow: 0 0 5px green
+
+           

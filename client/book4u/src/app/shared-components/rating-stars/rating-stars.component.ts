@@ -1,4 +1,5 @@
-import { AfterViewInit, ElementRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { AfterViewInit, ElementRef, Output } from '@angular/core';
 import { Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rating-stars.component.sass'],
 })
 export class RatingStarsComponent implements OnInit, AfterViewInit {
-  @Input() stars: number = 10;
-  @Input() rating: number = 5;
+  @Input() stars: number = 5;
+  @Input() rating: number = 3;
   @Input() color: string = 'red';
   @Input() size: { width: string; height: string } = {
     width: '1.25rem',
@@ -17,6 +18,7 @@ export class RatingStarsComponent implements OnInit, AfterViewInit {
   };
   @Input() readable: boolean = false;
   @ViewChild('container') containerRef: ElementRef<HTMLDivElement>;
+  @Output() ratingChanged = new Subject<Number>();
 
   colorsArray = new Array<string>();
   private starsArray: Array<SVGSVGElement>;
@@ -52,6 +54,7 @@ export class RatingStarsComponent implements OnInit, AfterViewInit {
     this.rating = this.getStarIndex(targetEl as SVGSVGElement) + 1;
     this.setColors(this.rating - 1);
     this.readable = true;
+    this.ratingChanged.next(this.rating);
   }
 
   private setColors(starIndex: number): void {

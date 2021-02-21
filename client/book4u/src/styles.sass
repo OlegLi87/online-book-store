@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap')
+@import './app/sass_partials/_shared-variables'
     
 * 
  box-sizing: border-box
@@ -9,5 +10,19 @@ html
 
 body
     margin: 0   
+
+    &::-webkit-scrollbar-track
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+        background-color: map-get($colors,content)
+        border-radius: 10px
+
+    &::-webkit-scrollbar
+        width: 10px
+        background-color: #F5F5F5
+        border-radius: 10px
+
+    &::-webkit-scrollbar-thumb
+        background-color: map-get($colors,header)
+        border-radius: 10px
 
    

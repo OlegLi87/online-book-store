@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CartService } from './cart.service';
 import { LocalStorageKeys, LocalStorageService } from './localStorage.service';
 import { HttpService } from './http.service';
@@ -28,6 +29,7 @@ export class AuthService {
     private httpService: HttpService,
     private localStorageService: LocalStorageService,
     private cartService: CartService,
+    private router: Router,
     @Inject(USER_STREAM) private userStream$: BehaviorSubject<User>
   ) {}
 
@@ -42,13 +44,14 @@ export class AuthService {
     this.httpService.login(formData, loginPath).subscribe((res) => {
       this.createAndStreamUserFromToken(res.token);
       this.saveToken(res.token);
+      this.redirectToMainPage();
     });
   }
 
   logout(): void {
     this.cartService.saveCart(true).then(() => {
       const token = this.userStream$.value.getToken();
-      this.httpService.logout(token).subscribe(() => {
+      this.httpService.logout().subscribe(() => {
         this.localStorageService.remove(LocalStorageKeys.TOKEN_KEY);
         this.userStream$.next(null);
       });
@@ -72,5 +75,9 @@ export class AuthService {
 
   private saveToken(token): void {
     this.localStorageService.save(LocalStorageKeys.TOKEN_KEY, token);
+  }
+
+  private redirectToMainPage(): void {
+    this.router.navigate(['/']);
   }
 }

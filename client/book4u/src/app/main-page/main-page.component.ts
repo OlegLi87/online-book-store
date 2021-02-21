@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Book } from '../models/book.model';
 import { BOOKS_STREAM } from '../services/dependency-providers/booksStream.provider';
+import { MODAL_ANSWER_STREAM } from '../services/dependency-providers/modalAnswerStream.provider';
 
 @Component({
   selector: 'app-main-page',
