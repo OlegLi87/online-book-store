@@ -6,7 +6,7 @@
       type="text"
       #title="ngModel"
       name="title"
-      [(ngModel)]="book.title"
+      [(ngModel)]="formBook.title"
       required
     />
     <div class="alert-message" *ngIf="!title.valid && title.touched">
@@ -21,7 +21,7 @@
       type="text"
       #author="ngModel"
       name="author"
-      [(ngModel)]="book.author"
+      [(ngModel)]="formBook.author"
       required
     />
     <div class="alert-message" *ngIf="!author.valid && author.touched">
@@ -37,14 +37,14 @@
       columns="50"
       #description="ngModel"
       name="description"
-      [(ngModel)]="book.description"
+      [(ngModel)]="formBook.description"
       required
       minlength="25"
     ></textarea>
     <div
       class="alert-message"
       *ngIf="
-        !description.valid && description.touched && !description.value.length
+        !description.valid && description.touched && !description.value?.length
       "
     >
       Description is missing
@@ -52,7 +52,7 @@
     <div
       class="alert-message"
       *ngIf="
-        !description.valid && description.touched && description.value.length
+        !description.valid && description.touched && description.value?.length
       "
     >
       Must have at minimum 25 symbols
@@ -67,19 +67,19 @@
       columns="50"
       #imageUrl="ngModel"
       name="imageUrl"
-      [(ngModel)]="book.imageUrl"
+      [(ngModel)]="formBook.imageUrl"
       required
       pattern="(https?:\/\/.*\.(?:png|jpg))"
     ></textarea>
     <div
       class="alert-message"
-      *ngIf="!imageUrl.valid && imageUrl.touched && !imageUrl.value.length"
+      *ngIf="!imageUrl.valid && imageUrl.touched && !imageUrl.value?.length"
     >
       ImageUrl is missing
     </div>
     <div
       class="alert-message"
-      *ngIf="!imageUrl.valid && imageUrl.touched && imageUrl.value.length"
+      *ngIf="!imageUrl.valid && imageUrl.touched && imageUrl.value?.length"
     >
       Must conform with 'https:\\***.jpg|png' pattern
     </div>
@@ -92,7 +92,7 @@
       type="text"
       #category="ngModel"
       name="category"
-      [(ngModel)]="book.category"
+      [(ngModel)]="formBook.category"
       required
     />
     <div class="alert-message" *ngIf="!category.valid && category.touched">
@@ -107,7 +107,7 @@
       type="number"
       #price="ngModel"
       name="price"
-      [(ngModel)]="book.price"
+      [(ngModel)]="formBook.price"
       min="0"
       required
     />
@@ -126,17 +126,14 @@
   <label class="text" for="publishDate">Publish Date</label>
   <div class="input-data">
     <input
+      #publishDate
       id="publishDate"
       type="date"
-      #publishDate="ngModel"
       name="publishDate"
-      [(ngModel)]="book.publishDate"
-      required
+      [valueAsDate]="formBook.publishDate"
+      (change)="formBook.publishDate = $event.target.valueAsDate"
     />
-    <div
-      class="alert-message"
-      *ngIf="!publishDate.valid && publishDate.touched"
-    >
+    <div class="alert-message" *ngIf="!publishDate.valueAsDate">
       Publish date is missing
     </div>
   </div>
@@ -144,17 +141,14 @@
   <label class="text" for="arrivalDate">Arrival Date</label>
   <div class="input-data">
     <input
+      #arrivalDate
       id="arrivalDate"
       type="date"
-      #arrivalDate="ngModel"
       name="arrivalDate"
-      [ngModel]="'2020 - 05 - 15'"
-      required
+      [valueAsDate]="formBook.arrivalDate"
+      (change)="formBook.arrivalDate = $event.target.valueAsDate"
     />
-    <div
-      class="alert-message"
-      *ngIf="!arrivalDate.valid && arrivalDate.touched"
-    >
+    <div class="alert-message" *ngIf="!arrivalDate.valueAsDate">
       Arrival date is missing
     </div>
   </div>
@@ -163,14 +157,18 @@
     <button
       type="submit"
       class="button create"
-      [disabled]="!form.valid"
+      [disabled]="
+        !form.valid || !publishDate.valueAsDate || !arrivalDate.valueAsDate
+      "
       [ngClass]="{
         disabled: !form.valid
       }"
     >
-      {{ book._id ? "Update" : "Create" }}
+      {{ formBook._id ? "Update" : "Create" }}
     </button>
-    <button class="button clear" type="reset">Clear</button>
+    <button class="button clear" type="button" (click)="clearForm()">
+      Clear
+    </button>
     <button class="button back" type="button" (click)="modalClosed.next()">
       Back
     </button>

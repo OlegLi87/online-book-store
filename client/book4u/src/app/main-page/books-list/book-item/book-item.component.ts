@@ -31,7 +31,7 @@ export class BookItemComponent implements OnInit {
 
   imageClicked(): void {
     if (this.userStream$.value?.isAdmin) this.showCreateUpdateModal = true;
-    else this.router.navigate(['/books', `${this.book._id}`]);
+    else this.router.navigate(['/book', `${this.book._id}`]);
   }
 
   addToCart(event: Event): void {

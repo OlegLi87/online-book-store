@@ -9,15 +9,15 @@ import { Subject } from 'rxjs';
   styleUrls: ['./update-create-modal.component.sass'],
 })
 export class UpdateCreateModalComponent implements OnInit {
-  @Input() book: Book;
+  @Input() private book: Book;
   @Output() modalClosed = new Subject<void>();
+  formBook: Book;
 
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    console.log(this.book);
     if (!this.book)
-      this.book = {
+      this.formBook = {
         title: '',
         author: '',
         description: '',
@@ -26,16 +26,24 @@ export class UpdateCreateModalComponent implements OnInit {
         price: 1.05,
         rating: 3,
       } as Book;
+    else this.formBook = Object.assign({}, this.book);
   }
 
   setRating(rating: number): void {
-    this.book.rating = rating;
+    this.formBook.rating = rating;
   }
 
   save(form: HTMLFormElement): void {
     // when creating new book
-    if (!this.book._id) this.httpService.addBook(this.book);
-    else this.httpService.updateBook(this.book, this.book);
+    if (!this.formBook._id) this.httpService.addBook(this.formBook);
+    else this.httpService.updateBook(this.formBook, this.formBook);
     this.modalClosed.next();
+  }
+
+  clearForm(): void {
+    for (let key in this.formBook) {
+      if (key === '_id') continue;
+      this.formBook[key] = null;
+    }
   }
 }
