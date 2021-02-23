@@ -25,6 +25,8 @@ export class UpdateCreateModalComponent implements OnInit {
         category: [],
         price: 1.05,
         rating: 3,
+        publishDate: null,
+        arrivalDate: null,
       } as Book;
     else this.formBook = Object.assign({}, this.book);
   }

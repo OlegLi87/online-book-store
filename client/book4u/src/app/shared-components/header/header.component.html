@@ -3,6 +3,32 @@
     *ngIf="showModal"
     [question]="modalQuestion"
   ></app-confirm-modal>
+
+  <div class="mobile-nav-toggle-button" (click)="toggleMobileNavList($event)">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <div class="mobile-nav-list" #mobileNavList>
+    <div class="mobile-nav-list-item" [routerLink]="'/cart'">Cart</div>
+    <div
+      class="mobile-nav-list-item"
+      *ngIf="!userStream$.value"
+      [routerLink]="'/login'"
+    >
+      Login
+    </div>
+    <div
+      class="mobile-nav-list-item"
+      *ngIf="userStream$.value"
+      (click)="logout()"
+    >
+      Logout
+    </div>
+  </div>
+
   <div class="leftSide-container">
     <a routerLink="/">
       <div class="store-logo-title-container">
@@ -11,6 +37,7 @@
       </div></a
     >
   </div>
+
   <div class="rightSide-container">
     <div class="greeting-container" *ngIf="!userStream$.value?.isAdmin">
       Hello,{{ currentUser ? currentUser.userName : "guest" }}

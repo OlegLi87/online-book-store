@@ -1,6 +1,13 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { AuthService, User } from './../../services/auth.service';
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { USER_STREAM } from 'src/app/services/dependency-providers/userStream.provider';
 import { MODAL_ANSWER_STREAM } from 'src/app/services/dependency-providers/modalAnswerStream.provider';
 
@@ -14,6 +21,13 @@ export class HeaderComponent implements OnInit {
   currentUser: User;
   showModal: boolean;
   modalQuestion = 'Sure to logout?';
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    this.showMobileNavList = true;
+    this.toggleMobileNavList(null);
+  }
+  @ViewChild('mobileNavList') mobileNavList: ElementRef<HTMLDivElement>;
+  private showMobileNavList = false;
 
   constructor(
     private authService: AuthService,
@@ -38,5 +52,13 @@ export class HeaderComponent implements OnInit {
       if (answer) this.authService.logout();
       this.showModal = false;
     });
+  }
+
+  toggleMobileNavList(event: Event): void {
+    event?.stopImmediatePropagation();
+    this.showMobileNavList = !this.showMobileNavList;
+    if (this.showMobileNavList)
+      this.mobileNavList.nativeElement.style['font-size'] = '1rem';
+    else this.mobileNavList.nativeElement.style['font-size'] = 0;
   }
 }

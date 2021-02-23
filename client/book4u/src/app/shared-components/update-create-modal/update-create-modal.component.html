@@ -155,13 +155,14 @@
 
   <div class="buttons-row">
     <button
+      #submitButton
       type="submit"
       class="button create"
       [disabled]="
         !form.valid || !publishDate.valueAsDate || !arrivalDate.valueAsDate
       "
       [ngClass]="{
-        disabled: !form.valid
+        disabled: submitButton.disabled
       }"
     >
       {{ formBook._id ? "Update" : "Create" }}
