@@ -1,3 +1,5 @@
+import { errorStreamProvider } from './services/dependency-providers/errorStream.provider';
+import { HttpConfigInterceptor } from './services/httpConfigInterceptor.service';
 import { modalAnswerStreamProvider } from './services/dependency-providers/modalAnswerStream.provider';
 import { CartItem } from 'src/app/services/cart.service';
 import { BehaviorSubject } from 'rxjs';
@@ -7,7 +9,7 @@ import {
 } from './services/dependency-providers/cartStream.provider';
 import { booksStreamProvider } from './services/dependency-providers/booksStream.provider';
 import { userStreamProvider } from './services/dependency-providers/userStream.provider';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpService } from './services/http.service';
 import { CartService } from './services/cart.service';
 import { SharedComponentsModule } from './shared-components/sharedComponents.module';
@@ -22,6 +24,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { BookPageComponent } from './book-page/book-page.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 // load books on app initialization
 function fetchBooks(httpService: HttpService): any {
@@ -55,6 +58,17 @@ function intializeCart(
   };
 }
 
+function configureRouter(router: Router): any {
+  return () => {
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        router.navigated = false;
+        window.scrollTo(0, 0);
+      }
+    });
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +87,11 @@ function intializeCart(
   ],
   providers: [
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true,
+    },
+    {
       provide: APP_INITIALIZER,
       useFactory: fetchBooks,
       deps: [HttpService],
@@ -90,10 +109,17 @@ function intializeCart(
       deps: [CartService, CART_STREAM],
       multi: true,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configureRouter,
+      deps: [Router],
+      multi: true,
+    },
     booksStreamProvider,
     userStreamProvider,
     cartStreamProvider,
     modalAnswerStreamProvider,
+    errorStreamProvider,
   ],
   bootstrap: [AppComponent],
 })

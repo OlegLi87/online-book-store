@@ -1,5 +1,7 @@
+import { Subject } from 'rxjs';
 import { AuthService, User } from './../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { ERROR_STREAM } from '../services/dependency-providers/errorStream.provider';
 
 export interface FormData {
   userName: string;
@@ -17,10 +19,20 @@ export class LoginComponent implements OnInit {
     password: '',
   };
   currentUser: User;
+  errorMessage: string;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    @Inject(ERROR_STREAM) private errorStream$: Subject<any>
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.errorStream$.subscribe((err) => {
+      if (err.type === 'authError') {
+        this.errorMessage = 'Credentials are incorrect';
+      }
+    });
+  }
 
   signIn(): void {
     this.authService.login(this.formData, 'signIn');
