@@ -7,17 +7,32 @@ $innerMargin: 1rem
     @include main-container()
 
 .content-container 
+    position: relative
     width: 70%
     margin: 2rem auto
+    padding-bottom: 5rem
     display: grid
     grid-template-columns: 10rem 3fr
-    grid-template-rows: 1fr auto thin 1fr 
+    grid-template-rows: 1fr auto thin 
     grid-gap: 1rem
 
+    @media (max-width: $secondBreakPoint)
+        margin-left: 1rem
+
+    @media (max-width: $thirdBreakPoint)
+        margin: 0 auto
+        display: flex
+        flex-direction: column
     
 .image-container
+    position: relative
     grid-column: span 1
     grid-row: span 3
+    height: 19.5rem
+
+    @media (max-width: $thirdBreakPoint)
+        height: 13rem
+        position: static
    
     .image
         height: 100%
@@ -29,17 +44,24 @@ $innerMargin: 1rem
 .title-container
     @include basicFlex()
     justify-content: flex-start
-    align-items: flex-start !important
+    align-items: flex-end !important
 
     .title
         font-size: $titleFontSize
         line-height: 1
         margin-right: $innerMargin
 
+        @media (max-width: $thirdBreakPoint)
+            font-size: $titleFontSize - 1.2rem
+            white-space: nowrap
+            margin: 0
+
+    @media (max-width: $thirdBreakPoint)
+        flex-direction: column
+        align-items: center !important
+
     .additional-info
         @include basicFlex()
-        position: relative
-        top: 1.4rem
 
         .publish-year
             margin-right: 0.3rem
@@ -47,12 +69,17 @@ $innerMargin: 1rem
         .author
             white-space: nowrap
 
+        @media (max-width: $thirdBreakPoint)
+            font-size: $titleFontSize - 1.7rem
+
 .description-container
     @include basicFlex()
     flex-direction: column
     justify-content: space-between
-    // grid-row: span 2
-    font-size: $titleFontSize - 1.3rem
+    font-size: $titleFontSize - 1.5rem
+
+    @media (max-width: $thirdBreakPoint)
+        font-size: $titleFontSize - 1.6rem
     
     .rating-container
          @include basicFlex()
@@ -60,7 +87,7 @@ $innerMargin: 1rem
 
 .price-container
     @include basicFlex()
-    grid-row: 4
+    grid-row: 3
     grid-column: 2
 
     .price
@@ -70,7 +97,11 @@ $innerMargin: 1rem
 
 .addToCart-container
     @include basicFlex()
-    grid-column: 1
+    white-space: nowrap
+    position: absolute
+    bottom: 0
+    left: 50%
+    transform: translate(-50%,0)
 
     .addToCart-button
         @include button()
@@ -84,5 +115,8 @@ $innerMargin: 1rem
     .checked-icon
         width: 3rem
         height: 3rem
-            
+
+    @media (max-width: $thirdBreakPoint)
+        position: absolute
+        bottom: 1rem    
    

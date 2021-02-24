@@ -33,7 +33,7 @@ $innerContainerMargin : 0.8rem
      text-decoration: none
      outline: none   
 
-    @media (max-width: 37.5rem)
+    @media (max-width: $secondBreakPoint)
        padding-right: 1.3rem
        padding-left: 1rem
 
@@ -55,7 +55,7 @@ $innerContainerMargin : 0.8rem
         background: darkenBackground(40%)
         border-radius: 20px
 
-    @media (max-width: 37.5rem)
+    @media (max-width: $secondBreakPoint)
         display: flex
         flex-direction: column
         align-items: center
@@ -136,7 +136,7 @@ $innerContainerMargin : 0.8rem
           @extend .active-link
           transition: color 100ms linear,fill 100ms linear
 
-    @media (max-width: 37.5rem)
+    @media (max-width: $secondBreakPoint)
         display: none
         
 .cart-container

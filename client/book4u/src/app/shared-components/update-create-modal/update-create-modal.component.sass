@@ -3,23 +3,35 @@ $font-size: 1.3rem
 
 :host
    @include modal-style
-     
+
 .book-data-form
     @include always-centered-style
     display: grid
     grid-template-columns: 10rem 20rem
     grid-gap: 0.5rem
 
+    @media (max-width: $secondBreakPoint)
+       grid-template-columns: 15rem
+       height: 80%
+       overflow-y: scroll
+       padding-right: 1rem
+
     .text
        font-size: 1.5rem
        color: #fff
        text-shadow: 0 0 5px #fff
        padding-left: 1.5rem  
-    
+
+       @media (max-width: $secondBreakPoint)
+          font-size: $font-size - 0.3rem
+
     input 
        @include input-style
        font-size: $font-size 
        width: 100%   
+
+       @media (max-width: $secondBreakPoint)
+          font-size: $font-size - 0.3rem
 
     .alert-message
         color: red
@@ -40,10 +52,16 @@ $font-size: 1.3rem
        grid-column: span 2
        padding-top: 1rem
 
+       @media (max-width: $secondBreakPoint)
+          grid-column: 1
+
        .button
           @include button
           font-size: $font-size - 0.3rem
           color: #fff
+
+          @media (max-width: $secondBreakPoint)
+             font-size: $font-size - 0.5rem
 
        .create
             background: green

@@ -17,24 +17,24 @@
             'invalid-input': !userName.valid && userName.touched
           }"
         />
-      </div>
-      <div
-        class="alert-message-container"
-        *ngIf="!userName.valid && userName.touched && !userName.value"
-      >
-        <span class="alert-message">userName is missing</span>
-      </div>
-      <div
-        class="alert-message-container"
-        *ngIf="
-          userName.touched &&
-          userName.errors?.minlength &&
-          userName.value.length
-        "
-      >
-        <span class="alert-message password-length"
-          >must be at least 5 symbols</span
+        <div
+          class="alert-message-container"
+          *ngIf="!userName.valid && userName.touched && !userName.value"
         >
+          <span class="alert-message">userName is missing</span>
+        </div>
+        <div
+          class="alert-message-container"
+          *ngIf="
+            userName.touched &&
+            userName.errors?.minlength &&
+            userName.value.length
+          "
+        >
+          <span class="alert-message password-length"
+            >must be at least 5 symbols</span
+          >
+        </div>
       </div>
       <div class="form-row">
         <label for="password">Password</label>
@@ -51,24 +51,24 @@
             'invalid-input': !password.valid && password.touched
           }"
         />
-      </div>
-      <div
-        class="alert-message-container"
-        *ngIf="!password.valid && password.touched && !password.value"
-      >
-        <span class="alert-message">password is missing</span>
-      </div>
-      <div
-        class="alert-message-container"
-        *ngIf="
-          password.touched &&
-          password.errors?.minlength &&
-          password.value.length
-        "
-      >
-        <span class="alert-message password-length"
-          >must be at least 5 symbols</span
+        <div
+          class="alert-message-container"
+          *ngIf="!password.valid && password.touched && !password.value"
         >
+          <span class="alert-message">password is missing</span>
+        </div>
+        <div
+          class="alert-message-container"
+          *ngIf="
+            password.touched &&
+            password.errors?.minlength &&
+            password.value.length
+          "
+        >
+          <span class="alert-message password-length"
+            >must be at least 5 symbols</span
+          >
+        </div>
       </div>
       <div class="form-row">
         <button

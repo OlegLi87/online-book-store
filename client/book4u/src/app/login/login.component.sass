@@ -23,6 +23,7 @@ $innerMargin: 1.1rem
     .form-row
         @include basicFlex()
         margin-top: $innerMargin * 2
+        position: relative
 
         &:not(:last-of-type)
            margin-top: $innerMargin
@@ -33,6 +34,9 @@ $innerMargin: 1.1rem
             padding: 5px    
             border-radius: 5px
             margin-left: $innerMargin
+
+            @media (max-width: $secondBreakPoint)
+                margin: 0.3rem 0
         
         .invalid-input
             border: 2px solid #ff5454
@@ -52,20 +56,41 @@ $innerMargin: 1.1rem
         .button-hovered
             @include button-hover()
             cursor: pointer
-                             
-        &:nth-of-type(2)        
+
+        &:not(:last-of-type)
+            @media (max-width: $secondBreakPoint) 
+                flex-direction: column 
+                width: fit-content
+                margin: 0 auto
+
+        &:nth-of-type(2)      
+            margin-top: 1.5rem 
+
             input
                 position: relative
                 left: 0.3rem
 
-    .alert-message-container
-        width: fit-content 
-        position: relative
-        left: 15rem         
+                @media (max-width: $secondBreakPoint)
+                    position: static
+        
+            @media (max-width: $secondBreakPoint)
+                margin-top: 0.8rem
+        
+        .alert-message-container
+            position: absolute
+            width: fit-content 
+            left: 14rem  
+            top: 1.4rem 
+            white-space: nowrap
 
-        .alert-message
-            font-size: 0.9rem
-            color: red 
+            .alert-message
+                font-size: 0.9rem
+                color: red 
 
-        .password-length
-            left: 10rem     
+            @media (max-width: $secondBreakPoint)
+                left: 0
+                top: 3.3rem
+
+    @media (max-width: $secondBreakPoint)
+        width: fit-content
+        padding: 1.5rem 1rem

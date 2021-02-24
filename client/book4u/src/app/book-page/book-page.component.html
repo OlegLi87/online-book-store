@@ -7,6 +7,36 @@
           backgroundImage: 'url(' + book.imageUrl + ')'
         }"
       ></div>
+      <div class="addToCart-container">
+        <div class="addToCart-button" (click)="addToCart()" *ngIf="!isAdded()">
+          Add To Cart
+        </div>
+        <div class="checked-icon" *ngIf="isAdded()">
+          <svg
+            version="1.1"
+            x="0px"
+            y="0px"
+            viewBox="0 0 367.805 367.805"
+            style="enable-background: new 0 0 367.805 367.805"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                style="fill: #3bb54a"
+                d="M183.903,0.001c101.566,0,183.902,82.336,183.902,183.902s-82.336,183.902-183.902,183.902
+      S0.001,285.469,0.001,183.903l0,0C-0.288,82.625,81.579,0.29,182.856,0.001C183.205,0,183.554,0,183.903,0.001z"
+              />
+              <polygon
+                style="fill: #d4e1f4"
+                points="285.78,133.225 155.168,263.837 82.025,191.217 111.805,161.96 155.168,204.801 
+      256.001,103.968 	"
+              />
+            </g>
+            <g></g>
+            <g></g>
+          </svg>
+        </div>
+      </div>
     </div>
     <div class="title-container">
       <div class="title">{{ book.title }}</div>
@@ -31,36 +61,6 @@
     <div class="price-container">
       Price
       <div class="price">{{ book.price | currency: "USD" }}</div>
-    </div>
-    <div class="addToCart-container">
-      <div class="addToCart-button" (click)="addToCart()" *ngIf="!isAdded()">
-        Add To Cart
-      </div>
-      <div class="checked-icon" *ngIf="isAdded()">
-        <svg
-          version="1.1"
-          x="0px"
-          y="0px"
-          viewBox="0 0 367.805 367.805"
-          style="enable-background: new 0 0 367.805 367.805"
-          xml:space="preserve"
-        >
-          <g>
-            <path
-              style="fill: #3bb54a"
-              d="M183.903,0.001c101.566,0,183.902,82.336,183.902,183.902s-82.336,183.902-183.902,183.902
-		S0.001,285.469,0.001,183.903l0,0C-0.288,82.625,81.579,0.29,182.856,0.001C183.205,0,183.554,0,183.903,0.001z"
-            />
-            <polygon
-              style="fill: #d4e1f4"
-              points="285.78,133.225 155.168,263.837 82.025,191.217 111.805,161.96 155.168,204.801 
-		256.001,103.968 	"
-            />
-          </g>
-          <g></g>
-          <g></g>
-        </svg>
-      </div>
     </div>
   </div>
 </div>

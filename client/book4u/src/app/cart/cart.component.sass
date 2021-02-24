@@ -28,7 +28,7 @@ $greenColor: map-get($colors,greenColor)
     .item-row
         @include basicFlex()
         justify-content: space-between
-        height: $imageHeight + 1rem
+        padding: 0.5rem 1.5rem
         width: 49rem
         margin: 1rem auto
         @include borderStyle()
@@ -38,28 +38,34 @@ $greenColor: map-get($colors,greenColor)
 
              .image-container
                  width: 3.8rem
-                 margin:0 $fromBorderMargin 0 $fromBorderMargin + 1.5rem
+                 margin-right: $fromBorderMargin  
                  height: $imageHeight
                  background-size: contain
                  background-repeat: no-repeat 
                  flex-shrink: 0 
+
+                 @media (max-width: $fourthBreakPoint)
+                     margin: 0.5rem 0
+                     height: 6rem
               
              .info
-                 width: 18.75rem
+                 width: fit-content
                  font-size: $infoFontSize
+
+                 @media (max-width: $fourthBreakPoint)
+                     font-size: $infoFontSize - 0.3rem
+        
+             @media (max-width: $fourthBreakPoint)
+                 flex-direction: column
+                 margin-bottom: 0.8rem
        
         .quantity-total-price-container
               @include basicFlex()
-              justify-content: flex-start
-              width: 21rem
-              height:$imageHeight
-              margin-right: 1rem            
-        
+              
               .quantity-container
                    @include basicFlex()
 
                    .quantity
-                        margin: 0 $fromBorderMargin
                         @include basicFlex()
                 
                         input
@@ -68,17 +74,17 @@ $greenColor: map-get($colors,greenColor)
                             padding: 0.3rem
                             margin-left: 0.5rem
                             font-size: $infoFontSize - 0.3rem    
-                                   
+
                    .quantity-change-container
                            @include basicFlex()
                            flex-direction: column
+                           margin-left: $fromBorderMargin
 
                            .quantity-change
                                @include basicFlex()
                                background: map-get($colors,header )
                                font-size: $infoFontSize
                                width: 1.5rem
-                               height: 1.5rem
                                border-radius: 50%
                                cursor: pointer
 
@@ -87,8 +93,7 @@ $greenColor: map-get($colors,greenColor)
 
                            .minus
                                margin-top: 0.5rem
-                        
-                    
+                         
               .price-container
                     width: 4.875rem
                     margin-left: $fromBorderMargin      
@@ -107,7 +112,21 @@ $greenColor: map-get($colors,greenColor)
                         opacity: 0.5
                         transition: opacity 100ms linear
 
-        
+                    @media (max-width: $fourthBreakPoint)
+                        margin: 0.6rem 0 0
+
+              @media (max-width: $fourthBreakPoint)
+                  flex-direction: column
+
+        @media (max-width: $firstBreakPoint)
+            flex-direction: column
+            align-items: flex-start
+            width: 25rem
+
+        @media (max-width: $fourthBreakPoint)
+            width: 16rem
+            align-items: center
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button 
   -webkit-appearance: none
@@ -123,50 +142,63 @@ input[type=number]
     @include borderStyle()
     justify-content: space-between
     width: 32rem
-    height: 5rem
-    margin-top: 2rem
+    padding: 1rem $fromBorderMargin
+    margin: 2rem 0
     z-index: 10
+
+    @media (max-width: $secondBreakPoint)
+        flex-direction: column
+        width: fit-content
     
     .total-price
-        margin-left: $fromBorderMargin
         font-size: $infoFontSize + 0.5rem
+
+        @media (max-width: $fourthBreakPoint)
+            font-size: $infoFontSize
 
         .price
             color: $greenColor
 
-    .button
-        width: 2.5rem
-        height: 3rem
-        position: relative
-        top: -0.7rem
+    .total-price-buttons
+        @include basicFlex
+        justify-content: space-around
+        
+        .button
+           width: 2.5rem
+           height: 3rem
+           position: relative
+           top: -0.7rem
 
-        :not(.button-text)
-             cursor: pointer
+           :not(.button-text)
+               cursor: pointer
 
-        .button-text
-            display: block
-            margin-bottom: 0.5rem
+           .button-text
+               display: block
+               margin-bottom: 0.5rem
 
-    .button.pay
-        color: $greenColor
-        fill: $greenColor
+        .button.pay
+           color: $greenColor
+           fill: $greenColor
+           margin-right: $fromBorderMargin * 4
 
-        :not(.button-text)
-           &:hover
-               fill: lighten($greenColor,25%)
-           &:active
+           :not(.button-text)
+               &:hover
+                 fill: lighten($greenColor,25%)
+               &:active
                  fill: rgba(255,255,255,0.5)
 
-    .button.clear 
-        margin-right: $fromBorderMargin + 1rem
-        color: red
-        fill: red
+        .button.clear 
+            color: red
+            fill: red
 
-        :not(.button-text)
-           &:hover
-               fill: darken(red,10%)
-           &:active
-                 fill: rgba(255,255,255,0.5)
+            :not(.button-text)
+               &:hover
+                  fill: darken(red,10%)
+               &:active
+                  fill: rgba(255,255,255,0.5)
+        
+        @media (max-width: $secondBreakPoint)
+            margin-top: 2rem
 
 
     
