@@ -80,11 +80,11 @@ export class CartService {
       this.httpService
         .fetchCart()
         .pipe(
-          map((cart) =>
-            cart.map((book) => {
+          map((cart) => {
+            return cart.map((book) => {
               return { item: book.book, quantity: book.quantity };
-            })
-          )
+            });
+          })
         )
         .subscribe((cartItems) => {
           this.cart = cartItems;
@@ -117,7 +117,7 @@ export class CartService {
 
   private modifyUserCart(): Array<any> {
     return this.cart.map((item) => {
-      return { bookId: item.item._id, quantity: item.quantity };
+      return { book: item.item, quantity: item.quantity };
     });
   }
 }

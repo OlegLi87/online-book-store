@@ -38,7 +38,7 @@ function tryToRemoveInvalidToken(token) {
 }
 
 async function findUser(userName) {
-  return await User.findOne({ userName }).populate('Book');
+  return await User.findOne({ userName }).populate('cart.book');
 }
 
 module.exports = { userAuth, adminAuth };
