@@ -1,3 +1,4 @@
+import { endLoadingStreamProvider } from './services/dependency-providers/endLoadingStream.provider';
 import { errorStreamProvider } from './services/dependency-providers/errorStream.provider';
 import { HttpConfigInterceptor } from './services/httpConfigInterceptor.service';
 import { modalAnswerStreamProvider } from './services/dependency-providers/modalAnswerStream.provider';
@@ -120,6 +121,7 @@ function configureRouter(router: Router): any {
     cartStreamProvider,
     modalAnswerStreamProvider,
     errorStreamProvider,
+    endLoadingStreamProvider,
   ],
   bootstrap: [AppComponent],
 })

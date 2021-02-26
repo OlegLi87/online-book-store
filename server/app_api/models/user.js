@@ -51,7 +51,7 @@ userSchema.methods.generateAuthToken = async function () {
   const token = jwt.sign(
     { userName: this.userName, isAdmin: this.isAdmin },
     process.env.JWT_SECRET,
-    { expiresIn: '1d' }
+    { expiresIn: '10d' }
   );
   this.tokens.push({ token });
   await this.save();

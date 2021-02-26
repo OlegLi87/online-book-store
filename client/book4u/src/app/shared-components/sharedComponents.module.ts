@@ -8,6 +8,7 @@ import { NgModule } from '@angular/core';
 import { CartItemsQuantityDisplayComponent } from './cart-items-quantity-display/cart-items-quantity-display.component';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { UpdateCreateModalComponent } from './update-create-modal/update-create-modal.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { UpdateCreateModalComponent } from './update-create-modal/update-create-
     CartItemsQuantityDisplayComponent,
     ConfirmModalComponent,
     UpdateCreateModalComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [CommonModule, RouterModule, FormsModule],
   exports: [
@@ -25,6 +27,7 @@ import { UpdateCreateModalComponent } from './update-create-modal/update-create-
     RatingStarsComponent,
     ConfirmModalComponent,
     UpdateCreateModalComponent,
+    LoadingSpinnerComponent,
   ],
 })
 export class SharedComponentsModule {}

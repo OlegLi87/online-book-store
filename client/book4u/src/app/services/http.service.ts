@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -42,11 +42,7 @@ export class HttpService {
 
   addBook(book: Book): void {
     this.http
-      .post<Observable<Book>>(connectionString + '/books', book, {
-        headers: new HttpHeaders({
-          Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-        }),
-      })
+      .post<Observable<Book>>(connectionString + '/books', book)
       .subscribe(this.fetchBooks.bind(this));
   }
 
@@ -54,23 +50,14 @@ export class HttpService {
     this.http
       .put<Observable<Book>>(
         connectionString + '/books/' + book._id,
-        updateData,
-        {
-          headers: new HttpHeaders({
-            Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-          }),
-        }
+        updateData
       )
       .subscribe(this.fetchBooks.bind(this));
   }
 
   deleteBook(book: Book): void {
     this.http
-      .delete(connectionString + '/books/' + book._id, {
-        headers: new HttpHeaders({
-          Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-        }),
-      })
+      .delete(connectionString + '/books/' + book._id)
       .subscribe(this.fetchBooks.bind(this));
   }
 
@@ -79,26 +66,14 @@ export class HttpService {
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(connectionString + '/users/signout', null, {
-      headers: new HttpHeaders({
-        Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-      }),
-    });
+    return this.http.post<void>(connectionString + '/users/signout', null);
   }
 
   fetchCart(): Observable<any> {
-    return this.http.get(connectionString + '/users/cart', {
-      headers: new HttpHeaders({
-        Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-      }),
-    });
+    return this.http.get(connectionString + '/users/cart');
   }
 
   saveCart(cart: Array<any>): Observable<any> {
-    return this.http.put(connectionString + '/users/cart', cart, {
-      headers: new HttpHeaders({
-        Authorization: this.AUTH_METHOD + this.userStream$.value.getToken(),
-      }),
-    });
+    return this.http.put(connectionString + '/users/cart', cart);
   }
 }

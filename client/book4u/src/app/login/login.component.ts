@@ -1,3 +1,5 @@
+import { END_LOADING_STREAM } from './../services/dependency-providers/endLoadingStream.provider';
+import { AuthorizationError } from './../models/errors.model';
 import { Subject } from 'rxjs';
 import { AuthService, User } from './../services/auth.service';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -20,25 +22,29 @@ export class LoginComponent implements OnInit {
   };
   currentUser: User;
   errorMessage: string;
+  loading = false;
 
   constructor(
     private authService: AuthService,
-    @Inject(ERROR_STREAM) private errorStream$: Subject<any>
+    @Inject(ERROR_STREAM) private errorStream$: Subject<Error>,
+    @Inject(END_LOADING_STREAM) private endLoadingStream$: Subject<void>
   ) {}
 
   ngOnInit(): void {
     this.errorStream$.subscribe((err) => {
-      if (err.type === 'authError') {
-        this.errorMessage = 'Credentials are incorrect';
-      }
+      if (err instanceof AuthorizationError) this.errorMessage = err.message;
     });
+
+    this.endLoadingStream$.subscribe(() => (this.loading = false));
   }
 
   signIn(): void {
+    this.loading = true;
     this.authService.login(this.formData, 'signIn');
   }
 
   signUp(): void {
+    this.loading = true;
     this.authService.login(this.formData, 'signUp');
   }
 

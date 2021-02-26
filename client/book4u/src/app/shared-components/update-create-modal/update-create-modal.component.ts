@@ -1,7 +1,8 @@
 import { HttpService } from './../../services/http.service';
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject, Input, OnInit, Output } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
 import { Subject } from 'rxjs';
+import { END_LOADING_STREAM } from 'src/app/services/dependency-providers/endLoadingStream.provider';
 
 @Component({
   selector: 'app-update-create-modal',
@@ -12,8 +13,12 @@ export class UpdateCreateModalComponent implements OnInit {
   @Input() private book: Book;
   @Output() modalClosed = new Subject<void>();
   formBook: Book;
+  loading = false;
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    @Inject(END_LOADING_STREAM) private endLoadingStream$: Subject<void>
+  ) {}
 
   ngOnInit(): void {
     if (!this.book)
@@ -29,6 +34,10 @@ export class UpdateCreateModalComponent implements OnInit {
         arrivalDate: null,
       } as Book;
     else this.formBook = Object.assign({}, this.book);
+
+    this.endLoadingStream$.subscribe(() => {
+      this.modalClosed.next();
+    });
   }
 
   setRating(rating: number): void {
@@ -39,7 +48,7 @@ export class UpdateCreateModalComponent implements OnInit {
     // when creating new book
     if (!this.formBook._id) this.httpService.addBook(this.formBook);
     else this.httpService.updateBook(this.formBook, this.formBook);
-    this.modalClosed.next();
+    this.loading = true;
   }
 
   clearForm(): void {

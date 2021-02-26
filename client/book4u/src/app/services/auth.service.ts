@@ -58,6 +58,13 @@ export class AuthService {
     });
   }
 
+  // in case of invalid token and logedin user
+  logoutLocally(): void {
+    this.localStorageService.remove(LocalStorageKeys.TOKEN_KEY);
+    this.userStream$.next(null);
+    this.router.navigate(['/login']);
+  }
+
   private createAndStreamUserFromToken(token: string): void {
     const payload = jwt_decode(token) as any;
     const user = new User(payload.userName, payload.isAdmin);

@@ -1,0 +1,29 @@
+@import '../../sass_partials/_shared-variables'
+
+:host
+    @include modal-style
+    z-index: 10000000
+    
+.lds-dual-ring
+  @include always-centered-style
+  display: inline-block
+  width: 80px
+  height: 80px
+
+  &:after
+    content: " "
+    display: block
+    width: 60px
+    height: 60px
+    margin: 8px
+    border-radius: 50%
+    border: 6px solid  map-get($colors,header )
+    border-color: map-get($colors,header ) transparent  map-get($colors,header ) transparent
+    animation: lds-dual-ring 1.2s linear infinite
+
+@keyframes lds-dual-ring
+  0%
+    transform: rotate(0deg)
+
+  100%
+    transform: rotate(360deg)

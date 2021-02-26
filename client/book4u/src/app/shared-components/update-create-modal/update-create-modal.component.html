@@ -121,6 +121,7 @@
     (ratingChanged)="setRating($event)"
     [size]="{ width: '2rem', height: '2rem' }"
     [color]="'#bdb6a4'"
+    [rating]="formBook.rating"
   ></app-rating-stars>
 
   <label class="text" for="publishDate">Publish Date</label>
@@ -175,3 +176,5 @@
     </button>
   </div>
 </form>
+
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>

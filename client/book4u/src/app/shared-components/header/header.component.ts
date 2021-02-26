@@ -1,3 +1,4 @@
+import { END_LOADING_STREAM } from './../../services/dependency-providers/endLoadingStream.provider';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { AuthService, User } from './../../services/auth.service';
 import {
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   currentUser: User;
   showModal: boolean;
   modalQuestion = 'Sure to logout?';
+  loading = false;
   @HostListener('document:click', ['$event'])
   onClick() {
     this.showMobileNavList = true;
@@ -32,13 +34,15 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     @Inject(USER_STREAM) readonly userStream$: BehaviorSubject<User>,
-    @Inject(MODAL_ANSWER_STREAM) private modalAnswerStream$: Subject<boolean>
+    @Inject(MODAL_ANSWER_STREAM) private modalAnswerStream$: Subject<boolean>,
+    @Inject(END_LOADING_STREAM) private endLoadingStream$: Subject<void>
   ) {}
 
   ngOnInit(): void {
     this.userStream$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
+    this.endLoadingStream$.subscribe(() => (this.loading = false));
   }
 
   isAdmin(): boolean {
@@ -49,7 +53,10 @@ export class HeaderComponent implements OnInit {
     this.showModal = true;
     const subscription = this.modalAnswerStream$.subscribe((answer) => {
       subscription.unsubscribe();
-      if (answer) this.authService.logout();
+      if (answer) {
+        this.authService.logout();
+        this.loading = true;
+      }
       this.showModal = false;
     });
   }
