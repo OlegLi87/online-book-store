@@ -12,7 +12,8 @@ async function userAuth(req, res, next) {
       if (err) tryToRemoveInvalidToken(token);
       else if (decoded) payload = decoded;
     });
-    const user = await findUser(payload.userName);
+    const user = await findUser(payload.userName, req);
+    console.log(user);
     if (!user) throw 'authError';
     const index = user.tokens.findIndex((t) => t.token === token);
     if (index === -1) throw 'authError';
@@ -37,8 +38,10 @@ function tryToRemoveInvalidToken(token) {
   });
 }
 
-async function findUser(userName) {
-  return await User.findOne({ userName }).populate('cart.book');
+async function findUser(userName, req) {
+  if (req.method.toLowerCase() === 'get' && req.url.includes('cart'))
+    return await User.findOne({ userName }).populate('cart.book');
+  else return await User.findOne({ userName });
 }
 
 module.exports = { userAuth, adminAuth };

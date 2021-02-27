@@ -1,9 +1,12 @@
 <div class="main-container">
   <div class="content-container">
-    <!-- <app-new-arrivals></app-new-arrivals>
-    <app-search-filter-sort-bar></app-search-filter-sort-bar> -->
-    <div></div>
-    <div></div>
-    <app-books-list [books]="booksStream$.value"></app-books-list>
+    <h1 class="title">Our Books Stock</h1>
+    <app-search-filter-sort-bar
+      [originalBooksList]="booksStream$.value"
+      (booksListChanged)="booksListChanged($event)"
+    ></app-search-filter-sort-bar>
+    <app-books-list
+      [books]="booksToDisplay || booksStream$.value"
+    ></app-books-list>
   </div>
 </div>

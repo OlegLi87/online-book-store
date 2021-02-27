@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { BookItemComponent } from './books-list/book-item/book-item.component';
 import { BooksListComponent } from './books-list/books-list.component';
 import { SearchFilterSortBarComponent } from './search-filter-sort-bar/search-filter-sort-bar.component';
-import { NewArrivalsComponent } from './new-arrivals/new-arrivals.component';
 import { MainPageComponent } from './main-page.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -22,7 +21,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MainPageComponent,
-    NewArrivalsComponent,
     SearchFilterSortBarComponent,
     BooksListComponent,
     BookItemComponent,
@@ -34,7 +32,6 @@ const routes: Routes = [
   ],
   exports: [
     MainPageComponent,
-    NewArrivalsComponent,
     SearchFilterSortBarComponent,
     BooksListComponent,
     BookItemComponent,

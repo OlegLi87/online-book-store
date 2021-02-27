@@ -1,6 +1,6 @@
 <div class="main-container">
-  <h1 class="title">Our Books Stock</h1>
-  <div class="books-container" *ngIf="books">
+  <div class="noBook-title" *ngIf="!books.length">No books to display</div>
+  <div class="books-container" *ngIf="books.length">
     <app-book-item *ngFor="let book of books" [book]="book"></app-book-item>
     <div
       class="new-book-container"

@@ -2,12 +2,16 @@
     
 .main-container
     @include main-container()
+    padding-top: 1rem
 
 .content-container
     @include content-container()
     display: grid
-    // grid-template-rows: 8rem 3rem auto
-    grid-template-rows: 1rem 1rem auto
+    grid-template-rows: 5rem 3rem auto
     
     
- 
+.title
+    text-align: center
+    font-size: 2.5rem
+    font-family: map-get($fonts,cursive)
+    text-shadow: 0 0 5px white

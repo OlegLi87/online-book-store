@@ -1,2 +1,70 @@
+@import '../../sass_partials/_shared-variables'
+
 :host
-    background: grey
+    @include basicFlex
+    top: 5rem
+    justify-content: space-between
+    padding: 0 2rem
+    background: lighten(map-get($colors,header),5%)
+    border-radius: 15px
+    box-shadow: 0 0 3px map-get($colors,header)
+    margin-bottom: 0.3rem
+
+.section
+    @include basicFlex
+
+.search
+    position: relative
+
+    input
+        @include input-style
+        font-family: map-get($fonts,cursive)
+        font-size: 1.1rem
+        box-shadow: 0 0 5px darken(map-get($colors,header),15%)
+        padding-left: 1.5rem
+    
+    .search-icon-container
+        width: 1.3rem
+        fill: darken(map-get($colors,header),15%)
+        position: absolute
+        left:0.3rem
+        top: 0.35rem
+
+    .button-search
+        @include button
+        margin-left: 0.3rem
+        padding: 0.4rem
+        background: darken(map-get($colors,header),15%)
+        color: map-get($colors,content )
+        &:hover
+            @include button-hover
+        &:active
+            @include button-active
+
+    .title-list
+        position: absolute
+        z-index: 100
+        background: rgba(189, 175, 140,0.8 )
+        list-style: none
+        width: 15rem
+        padding:0
+        left: -0.7rem
+        top: 1rem
+        border-radius: 0 0 10px 10px
+        
+        .title-list-item
+            padding: 0.5rem 0
+            cursor: pointer
+            text-align: center
+            &:not(:first-of-type)
+                border-top: thin solid black
+            &:hover
+                background: map-get($colors,content)
+                
+
+::placeholder
+        opacity: 0.8
+        
+        
+        
+    
